@@ -1,0 +1,232 @@
+<div class="admin-dashboard-container">
+  <h2>Admin Dashboard</h2>
+  <p>Manage incident reports submitted by users.</p>
+
+  <!-- Navigation Tabs -->
+  <div class="dashboard-tabs">
+    <button
+      class="tab-btn"
+      [class.active]="activeView === 'pending'"
+      (click)="switchView('pending')"
+    >
+      Pending Alerts
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeView === 'approved'"
+      (click)="switchView('approved')"
+    >
+      Published Alerts
+    </button>
+  </div>
+
+  <!-- PENDING REPORTS VIEW -->
+  <ng-container *ngIf="activeView === 'pending'">
+    <div class="reports-management">
+      <h3 class="section-subtitle">Pending Safety Alerts - Awaiting Review</h3>
+
+      <ng-container *ngIf="pendingReports$ | async as reports; else pendingLoading">
+        <ng-container *ngIf="reports.length > 0; else noPendingReports">
+          <div class="reports-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Submitted</th>
+                  <th>Description</th>
+                  <th>Priority</th>
+                  <th>Location</th>
+                  <th>Reporter</th>
+                  <th>Image</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let report of reports; trackBy: trackById" [attr.data-id]="report.id">
+                  <td>
+                    <div class="date-display">
+                      <div>{{ report.createdAt | date: 'MMM d, y' }}</div>
+                      <small>{{ report.createdAt | date: 'h:mm a' }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <strong>{{ report.description }}</strong>
+                  </td>
+                  <td>
+                    <span
+                      class="priority-badge"
+                      [ngClass]="'priority-' + (report.priority || 'medium')"
+                    >
+                      {{ (report.priority || 'medium') | uppercase }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="location-display">
+                      <div>{{ report.street }}</div>
+                      <small>{{ report.barangay }}</small>
+                      <ng-container *ngIf="report.city">
+                        <small>{{ report.city }}</small>
+                      </ng-container>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="reporter-info">
+                      <p>
+                        <strong>{{ report.reporterName || 'N/A' }}</strong>
+                      </p>
+                      <small>{{ report.reporterId }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="report.imageUrl; else noImage">
+                      <img [src]="report.imageUrl" alt="Report image" class="thumbnail" />
+                    </ng-container>
+                    <ng-template #noImage><span class="no-image">No image</span></ng-template>
+                  </td>
+                  <td class="actions">
+                    <button (click)="approveReport(report.id)" class="btn-approve">
+                      Accept
+                    </button>
+                    <button (click)="deleteReport(report.id)" class="btn-delete">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+
+        <ng-template #noPendingReports>
+          <div class="no-reports-message">
+            <p>No pending reports. All reports have been reviewed!</p>
+          </div>
+        </ng-template>
+      </ng-container>
+
+      <ng-template #pendingLoading>
+        <div class="loading">Loading reports...</div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <!-- APPROVED REPORTS VIEW -->
+  <ng-container *ngIf="activeView === 'approved'">
+    <div class="reports-management">
+      <h3 class="section-subtitle">Published Safety Alerts - Visible to Residents</h3>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label for="priorityFilter">Filter by Priority:</label>
+          <select id="priorityFilter" [(ngModel)]="approvedFilterPriority" class="filter-select">
+            <option value="all">All Priorities</option>
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="searchFilter">Search:</label>
+          <input
+            type="text"
+            id="searchFilter"
+            [(ngModel)]="approvedFilterSearch"
+            placeholder="Search by description, location, or reporter..."
+            class="filter-input"
+          />
+        </div>
+
+        <button class="btn-reset-filters" (click)="resetFilters()">Reset Filters</button>
+      </div>
+
+      <ng-container *ngIf="approvedReports$ | async as reports; else approvedLoading">
+        <ng-container *ngIf="getFilteredApprovedReports(reports) as filteredReports">
+          <ng-container *ngIf="reports.length > 0">
+            <div class="results-count">
+              Showing {{ filteredReports.length }} of {{ reports.length }} approved reports
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="filteredReports.length > 0; else noApprovedMatches">
+            <div class="reports-grid">
+              <div *ngFor="let report of filteredReports; trackBy: trackById" class="report-card">
+                <div class="card-header">
+                  <span
+                    class="priority-badge"
+                    [ngClass]="'priority-' + (report.priority || 'medium')"
+                  >
+                    {{ (report.priority || 'medium') | uppercase }}
+                  </span>
+                  <span class="report-date">
+                    {{ report.timestamp ? report.timestamp : (report.createdAt | date: 'MMM d, y h:mm a') }}
+                  </span>
+                </div>
+
+                <div class="card-body">
+                  <h4 class="report-title">{{ report.description }}</h4>
+
+                  <div class="report-details">
+                    <div class="detail-item">
+                      <strong>Location:</strong>
+                      <span>{{ report.street }}, {{ report.barangay }}</span>
+                      <ng-container *ngIf="report.city">
+                        <span class="text-muted">{{ report.city }}</span>
+                      </ng-container>
+                    </div>
+
+                    <ng-container *ngIf="report.location">
+                      <div class="detail-item">
+                        <strong>Coordinates:</strong>
+                        <span class="coords">
+                          {{ report.location.lat | number: '1.6-6' }}, {{ report.location.lng | number: '1.6-6' }}
+                        </span>
+                      </div>
+                    </ng-container>
+
+                    <div class="detail-item">
+                      <strong>Reporter:</strong>
+                      <span>{{ report.reporterName || 'N/A' }}</span>
+                    </div>
+
+                    <ng-container *ngIf="report.reporterEmail">
+                      <div class="detail-item">
+                        <strong>Email:</strong>
+                        <span>{{ report.reporterEmail }}</span>
+                      </div>
+                    </ng-container>
+                  </div>
+
+                  <ng-container *ngIf="report.imageUrl">
+                    <div class="report-image">
+                      <img [src]="report.imageUrl" alt="Report evidence" />
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="card-footer">
+                  <button class="btn-delete-approved" (click)="deleteApprovedReport(report.id)">
+                    Delete Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template #noApprovedMatches>
+            <div class="no-reports-message">
+              <ng-container *ngIf="approvedFilterPriority !== 'all' || approvedFilterSearch">
+                <p>No approved reports match your filters.</p>
+              </ng-container>
+              <ng-container *ngIf="approvedFilterPriority === 'all' && !approvedFilterSearch && reports.length === 0">
+                <p>No approved reports yet.</p>
+              </ng-container>
+            </div>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #approvedLoading>
+        <div class="loading">Loading approved reports...</div>
+      </ng-template>
+    </div>
+  </ng-container>
+</div>

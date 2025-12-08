@@ -1,0 +1,338 @@
+.app-sos-button-container {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1200;
+  display: block;
+  width: auto;
+}
+
+/* Mobile Overlay Positioning - Full Screen */
+@media (max-width: 768px) {
+  .app-sos-button-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1200;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+  
+  .app-sos-button-container .app-sos-btn {
+    pointer-events: all;
+  }
+}
+
+/* Main SOS Button */
+.app-sos-btn {
+  display: inline-block;
+  width: auto;
+  min-width: 180px;
+  padding: 14px 22px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: white;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #dc3545 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 12px 32px rgba(255, 107, 107, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.25s ease;
+  animation: sosPulse 2.4s infinite;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-sos-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  animation: shimmerSOS 3s infinite;
+}
+
+@keyframes shimmerSOS {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.app-sos-btn:hover:not([disabled]) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(255, 107, 107, 0.46), inset 0 1px 2px rgba(255, 255, 255, 0.22);
+}
+
+.app-sos-btn:active:not([disabled]) {
+  transform: translateY(-1px) scale(.99);
+}
+
+.app-sos-btn:disabled {
+  background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+  cursor: not-allowed;
+  animation: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0.8;
+}
+
+@keyframes sosPulse {
+  0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.6); }
+  70% { box-shadow: 0 0 0 18px rgba(211,47,47,0); }
+  100% { box-shadow: 0 0 0 0 rgba(211,47,47,0); }
+}
+
+/* Dialer Overlay */
+.dialer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1201;
+}
+
+/* Mobile overlay positioning: bottom-aligned full screen */
+@media (max-width: 768px) {
+  .dialer-overlay {
+    align-items: flex-end;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1201;
+  }
+}
+
+.dialer-container {
+  background: rgba(18, 18, 20, 0.98);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 18px;
+  width: 92%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.6);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Mobile dialer: full width, rounded top only, positioned at bottom */
+@media (max-width: 768px) {
+  .dialer-container {
+    width: 100%;
+    max-width: none;
+    border-radius: 16px 16px 0 0;
+    padding: 16px;
+    max-height: 85vh;
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.dialer-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.dialer-header h3 { margin:0; font-size:1.25rem; background:linear-gradient(135deg,#ff6b6b,#ee5a6f); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:800; }
+.close-btn { background:none; border:none; color:#bbb; font-size:1.6rem; cursor:pointer; }
+
+.dialer-display { background:#000; padding:18px; border-radius:8px; text-align:center; margin-bottom:14px; border:2px solid #d32f2f; }
+.display-number { font-family: 'Courier New', monospace; font-size: clamp(1.6rem, 5vw, 2.6rem); color:#00ff66; letter-spacing:4px; }
+.display-label { font-size: clamp(0.72rem, 1.6vw, 0.85rem); color:#aaa; text-transform:uppercase; margin-top:6px; }
+
+.dialer-keypad { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+.keypad-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.key-btn { padding: clamp(8px, 2.4vw, 14px); font-size: clamp(1rem, 2.6vw, 1.3rem); background:#444; color:#fff; border-radius:8px; border:1px solid #666; cursor:pointer; }
+.key-btn:hover:not([disabled]) { background:#555; }
+
+.dialer-controls { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.btn-backspace, .btn-clear { padding:10px; border-radius:8px; background:#666; color:#fff; border:1px solid #888; }
+.btn-call { width:100%; padding:12px; border-radius:8px; background:#d32f2f; color:#fff; border:none; }
+
+.dialer-info { background: rgba(211,47,47,0.08); border:1px solid rgba(211,47,47,0.12); border-radius:8px; padding:10px; color:#ffb3b3; text-align:center; }
+
+/* Fake Call Screen */
+.fake-call-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); display:flex; align-items:center; justify-content:center; z-index:1100; }
+.fake-call-container { width:94%; max-width:520px; background:linear-gradient(135deg,#101224,#19203a); border-radius:18px; padding:20px; color:#fff; box-shadow:0 30px 80px rgba(0,0,0,0.8); max-height:90vh; overflow:auto; }
+
+/* Responsive small screens: full overlay */
+@media (max-width:768px) {
+  .app-sos-btn {
+    display: block;
+    width: 90%;
+    max-width: 400px;
+    min-width: 0;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin: 0 auto 20px auto;
+  }
+}
+
+@media (max-width:480px) {
+  .app-sos-btn {
+    width: 85%;
+    max-width: 350px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width:375px) {
+  .app-sos-btn {
+    width: 80%;
+    max-width: 320px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+}
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.caller-info h2 {
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  margin: 8px 0 4px 0;
+  font-weight: 700;
+}
+
+.caller-info p {
+  font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+  color: #b0b0b0;
+  margin: 0;
+}
+
+
+
+.call-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 18px 0 16px 0;
+  flex-wrap: wrap;
+}
+
+.btn-speaker,
+.btn-mute,
+.btn-hangup {
+  border: none;
+  border-radius: 50%;
+  width: clamp(44px, 9vw, 60px);
+  height: clamp(44px, 9vw, 60px);
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-speaker:hover,
+.btn-mute:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-hangup {
+  width: clamp(56px, 12vw, 70px);
+  height: clamp(56px, 12vw, 70px);
+  font-size: clamp(1.4rem, 4.5vw, 2rem);
+  background: linear-gradient(135deg, #ff6b6b 0%, #dc3545 100%);
+  border-color: #ff6b6b;
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+.btn-hangup:hover {
+  background: linear-gradient(135deg, #ee5a6f 0%, #c82333 100%);
+  transform: scale(1.12);
+  box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6);
+}
+
+.btn-hangup:active {
+  transform: scale(1.05);
+}
+
+.call-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  color: #b0b0b0;
+  line-height: 1.5;
+}
+
+.call-footer p {
+  margin: 0;
+}
+
+.call-footer strong {
+  color: #ff6b6b;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .dialer-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .display-number {
+    font-size: 2rem;
+  }
+
+  .key-btn {
+    padding: 16px;
+    font-size: 1.2rem;
+  }
+
+  .dialer-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .fake-call-container {
+    padding: 20px 15px;
+  }
+
+  .caller-avatar {
+    font-size: 3rem;
+  }
+
+  .caller-info h2 {
+    font-size: 1.4rem;
+  }
+
+  .timer-display {
+    font-size: 2rem;
+  }
+
+  .btn-speaker,
+  .btn-mute {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .btn-hangup {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+  }
+}

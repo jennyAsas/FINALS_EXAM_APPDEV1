@@ -1,0 +1,303 @@
+/* Police Issuance Reports Page */
+
+.police-reports-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d1a3d 0%, #1a2a5e 50%, #0d1a3d 100%);
+  padding: 12px 12px 32px 12px;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #1a2a5e 0%, #0d1a3d 100%);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(212, 168, 75, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+
+.back-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d4a84b;
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.header-text p {
+  margin: 2px 0 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+}
+
+.controls-section {
+  width: 100%;
+  max-width: 900px;
+  margin: 12px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.search-icon {
+  width: 18px;
+  height: 18px;
+  color: #888;
+  margin-right: 10px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+.clear-search {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  color: #888;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-tab {
+  padding: 10px 16px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab.active {
+  background: rgba(212, 168, 75, 0.2);
+  border-color: #d4a84b;
+  color: #d4a84b;
+}
+
+.filter-tab.priority-high.active {
+  background: rgba(196, 30, 58, 0.18);
+  border-color: #c41e3a;
+  color: #ff6b6b;
+}
+
+.filter-tab.priority-medium.active {
+  background: rgba(212, 168, 75, 0.2);
+  border-color: #d4a84b;
+  color: #d4a84b;
+}
+
+.filter-tab.priority-low.active {
+  background: rgba(46, 204, 113, 0.2);
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.reports-list {
+  width: 100%;
+  max-width: 900px;
+  margin: 16px auto 24px;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.feed-item {
+  border-left: 5px solid #ccc;
+  padding: 24px 20px 16px 20px;
+  margin-bottom: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  transition: box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 720px;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feed-item:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+
+.feed-item.approved { border-left-color: #4caf50; }
+.feed-item.priority-high { border-left-color: #c41e3a; }
+.feed-item.priority-medium { border-left-color: #d4a84b; }
+.feed-item.priority-low { border-left-color: #2ecc71; }
+
+.feed-item.no-image { padding-bottom: 8px; }
+.feed-item.no-image .item-image { display: none; }
+
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: rgba(0, 0, 0, 0.06);
+  color: #333;
+}
+
+.item-details { display: flex; flex-direction: column; gap: 6px; }
+
+.report-desc {
+  font-size: 1.08rem;
+  color: #222;
+  font-weight: 600;
+  margin: 0;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  font-size: 0.98rem;
+  color: #444;
+}
+
+.meta-row .location-row,
+.meta-row .landmark-row,
+.meta-row .date-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-row .date-row { color: #888; font-size: 0.95rem; }
+
+.item-image img {
+  max-width: 100%;
+  max-height: 220px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
+  display: block;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.view-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #d4a84b 0%, #c9a227 100%);
+  color: #1a2a5e;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.view-details-btn:hover { box-shadow: 0 4px 12px rgba(212,168,75,0.35); transform: translateY(-1px); }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  color: #fff;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.empty-state h3 { margin: 0 0 8px; font-size: 18px; }
+.empty-state p { margin: 0; color: rgba(255,255,255,0.7); }
+
+@media (max-width: 768px) {
+  .page-header { padding: 10px 12px; }
+  .header-text h1 { font-size: 1.2rem; }
+  .controls-section { padding: 0 8px; }
+  .feed-item { padding: 18px 14px 12px 14px; }
+  .report-desc { font-size: 1rem; }
+  .item-image img { max-height: 180px; }
+}
+
+@media (max-width: 480px) {
+  .filter-tab { padding: 8px 12px; }
+  .meta-row { gap: 10px; }
+  .item-image img { max-height: 150px; }
+}

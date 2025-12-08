@@ -1,0 +1,50 @@
+<div class="full-map-container scroll-reveal animate-on-load">
+  <!-- Notification Alert -->
+  <div
+    class="location-notification"
+    *ngIf="notificationMessage"
+    [class.notification-error]="notificationType === 'error'"
+    [class.notification-success]="notificationType === 'success'"
+    [class.notification-warning]="notificationType === 'warning'"
+  >
+    <span class="notification-text">{{ notificationMessage }}</span>
+    <button class="notification-close" (click)="notificationMessage = ''">Close</button>
+  </div>
+
+  <!-- Map Controls Header -->
+  <div class="map-controls">
+    <h2 class="map-title">Incident Map View</h2>
+
+    <div class="filter-controls">
+      <button class="filter-btn" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+        ALL INCIDENTS
+      </button>
+      <button
+        class="filter-btn filter-high"
+        [class.active]="activeFilter === 'high'"
+        (click)="setFilter('high')"
+      >
+        HIGH PRIORITY
+      </button>
+      <button
+        class="filter-btn filter-medium"
+        [class.active]="activeFilter === 'medium'"
+        (click)="setFilter('medium')"
+      >
+        MEDIUM PRIORITY
+      </button>
+      <button
+        class="filter-btn filter-low"
+        [class.active]="activeFilter === 'low'"
+        (click)="setFilter('low')"
+      >
+        LOW PRIORITY
+      </button>
+    </div>
+  </div>
+
+  <!-- Full Screen Map -->
+  <div class="map-wrapper-fullscreen">
+    <div id="mountainSentinelMap" class="map-container"></div>
+  </div>
+</div>

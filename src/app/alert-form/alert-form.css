@@ -1,0 +1,118 @@
+/* alert-form.css - Light theme */
+
+.alert-form-container {
+    width: 100%;
+    padding: 20px;
+    min-height: 100%;
+    background: #f8f9fa;
+}
+
+.form-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-weight: 700;
+}
+
+.form-title + p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+form {
+    display: grid;
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    color: #2c3e50 !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.form-input.textarea,
+.form-input.select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background: #ffffff !important;
+    color: #333;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.form-input.textarea:focus,
+.form-input.select:focus {
+    outline: none;
+    border-color: #1a2a5e;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(26, 42, 94, 0.1);
+}
+
+.form-input.textarea::placeholder {
+    color: #999;
+}
+
+.form-input.select option {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #1a2a5e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(26, 42, 94, 0.3);
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #2a3f7a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 42, 94, 0.4);
+}
+
+.submit-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}

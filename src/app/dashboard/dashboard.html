@@ -1,0 +1,459 @@
+<div class="dashboard-container" role="main" id="main-content">
+  @if (sosActive) {
+    <div
+      class="sos-overlay"
+      [class.sos-success]="sosSuccess"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="sos-title"
+      aria-describedby="sos-desc"
+    >
+      <div class="sos-modal scroll-reveal animate-on-load">
+        @if (!sosSuccess) {
+          <div class="sos-sending">
+            <div class="sos-pulse-ring"></div>
+            <div class="sos-pulse-ring delay-1"></div>
+            <div class="sos-pulse-ring delay-2"></div>
+            <div class="sos-icon-large">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon
+                  points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
+                ></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+          </div>
+          <h2 class="sos-title" id="sos-title">SENDING EMERGENCY SOS</h2>
+          <p class="sos-subtitle" id="sos-desc">Please wait while we alert emergency services...</p>
+          <div class="sos-location-status">
+            @if (userLocation) {
+              <span class="location-obtained">Location obtained</span>
+            } @else {
+              <span class="location-pending">Obtaining your location...</span>
+            }
+          </div>
+          <div class="sos-progress-bar">
+            <div class="sos-progress-fill" [style.width.%]="sosProgress"></div>
+          </div>
+          <p class="sos-countdown">{{ sosCountdown }} seconds remaining</p>
+        } @else {
+          <div class="sos-success-container">
+            <div class="sos-success-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h2 class="sos-title success">EMERGENCY RECEIVED</h2>
+            <p class="sos-subtitle">Admin has been notified immediately.</p>
+            <p class="sos-info">Help is on the way. Stay calm and safe.</p>
+            <div class="sos-details">
+              <div
+                class="sos-detail-item"
+                [class.success]="userLocation"
+                [class.warning]="!userLocation"
+              >
+                <div class="detail-icon location"></div>
+                @if (userLocation) {
+                  <span>Your location has been shared</span>
+                } @else {
+                  <span>Location not available - please share your location manually</span>
+                }
+              </div>
+              <div class="sos-detail-item">
+                <div class="detail-icon services"></div>
+                <span>Emergency services alerted</span>
+              </div>
+              <div class="sos-detail-item">
+                <div class="detail-icon admin"></div>
+                <span>Admin notified in real-time</span>
+              </div>
+            </div>
+            <button class="sos-close-btn" (click)="closeSosOverlay()">Close</button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="dashboard-content">
+    <!-- Left FAB Stack: Floating overlay buttons with labels -->
+    <nav class="fab-stack" aria-label="Quick actions">
+      <!-- Police Issuance Reports FAB -->
+      <a
+        routerLink="/police-reports"
+        class="fab-btn alerts-fab"
+        aria-label="View Police Issuance Reports"
+        role="button"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+        </svg>
+        <span class="fab-label">Police Reports</span>
+      </a>
+
+      <!-- Map FAB -->
+      <button
+        type="button"
+        class="fab-btn map-fab"
+        (click)="viewFullMap()"
+        aria-label="View Incident Map"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span class="fab-label">Incident Map</span>
+      </button>
+
+      <!-- SOS FAB -->
+      <button
+        type="button"
+        class="fab-btn sos-fab"
+        (click)="triggerSOS()"
+        aria-label="Trigger Emergency SOS"
+        [class.disabled]="!(currentUser$ | async)"
+        [attr.aria-disabled]="!(currentUser$ | async)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <polygon
+            points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
+          ></polygon>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span class="fab-label">Emergency SOS</span>
+      </button>
+    </nav>
+
+    <!-- Main Content - Modern Social Feed Layout -->
+    <main class="main-feed-layout" role="region" aria-labelledby="feed-title">
+      <!-- Primary Feed Column -->
+      <section class="feed-column" aria-label="Safety reports feed">
+        <!-- Compact Feed Header with Filters -->
+        <header class="feed-header-bar scroll-reveal animate-on-load">
+          <h2 class="feed-title" id="feed-title">Community Safety Feed</h2>
+          <div class="feed-search" role="search">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              placeholder="Search..."
+              (input)="onSearch($any($event.target).value)"
+              aria-label="Search reports"
+              id="feed-search-input"
+            />
+          </div>
+          <nav class="feed-nav-filters" aria-label="Filter reports by priority">
+            <button
+              type="button"
+              class="nav-filter-btn"
+              [class.active]="currentFilter === 'all'"
+              (click)="setFilter('all')"
+              [attr.aria-pressed]="currentFilter === 'all'"
+            >
+              All
+            </button>
+            <button
+              type="button"
+              class="nav-filter-btn"
+              [class.active]="currentFilter === 'high'"
+              (click)="setFilter('high')"
+              [attr.aria-pressed]="currentFilter === 'high'"
+            >
+              Urgent
+            </button>
+            <button
+              type="button"
+              class="nav-filter-btn"
+              [class.active]="currentFilter === 'medium'"
+              (click)="setFilter('medium')"
+              [attr.aria-pressed]="currentFilter === 'medium'"
+            >
+              Alerts
+            </button>
+            <button
+              type="button"
+              class="nav-filter-btn"
+              [class.active]="currentFilter === 'low'"
+              (click)="setFilter('low')"
+              [attr.aria-pressed]="currentFilter === 'low'"
+            >
+              Info
+            </button>
+          </nav>
+        </header>
+
+        <!-- Feed Cards -->
+        <div class="feed-cards-container" role="feed" aria-busy="false">
+          <div *ngIf="filteredReports$ | async as reports">
+            <div *ngIf="reports.length > 0; else noReports" class="feed-cards" role="list">
+              <!-- Individual Feed Card -->
+              <article
+                *ngFor="let report of reports; let i = index"
+                class="feed-card scroll-reveal animate-on-load"
+                (click)="viewReportDetail(report.id)"
+                (keydown.enter)="viewReportDetail(report.id)"
+                (keydown.space)="viewReportDetail(report.id)"
+                [class.priority-high]="report.priority === 'high'"
+                [class.priority-medium]="report.priority === 'medium'"
+                [class.priority-low]="report.priority === 'low' || !report.priority"
+                [style.animation-delay]="i * 0.08 + 's'"
+                tabindex="0"
+                role="listitem"
+                [attr.aria-label]="
+                  'Safety report - ' +
+                  (report.priority === 'high'
+                    ? 'Urgent'
+                    : report.priority === 'medium'
+                      ? 'Alert'
+                      : 'Info') +
+                  ' priority'
+                "
+              >
+                <!-- Priority Ribbon -->
+                <div
+                  class="priority-ribbon"
+                  [class.high]="report.priority === 'high'"
+                  [class.medium]="report.priority === 'medium'"
+                  [class.low]="report.priority === 'low' || !report.priority"
+                >
+                  {{
+                    report.priority === 'high'
+                      ? 'URGENT'
+                      : report.priority === 'medium'
+                        ? 'ALERT'
+                        : 'INFO'
+                  }}
+                </div>
+
+                <!-- Card Header -->
+                <div class="card-header">
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="user-details">
+                      <span class="user-name">{{
+                        report.reporterName || 'Anonymous Citizen'
+                      }}</span>
+                      <span class="post-meta">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Just now
+                        <span class="meta-dot">•</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        {{ report.barangay }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Content -->
+                <div class="card-content">
+                  <!-- Report Image (if available) -->
+                  <div *ngIf="report.imageUrl" class="card-image">
+                    <img [src]="report.imageUrl" [alt]="report.description" loading="lazy" />
+                  </div>
+                  <p class="content-text">{{ report.description }}</p>
+                </div>
+
+                <!-- Location Badge -->
+                <div class="location-badge">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span>{{ report.street }}, {{ report.barangay }}</span>
+                </div>
+
+                <!-- Card Footer -->
+                <div class="card-footer">
+                  <button
+                    type="button"
+                    class="footer-action primary"
+                    (click)="viewReportDetail(report.id); $event.stopPropagation()"
+                    aria-label="View report details"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    Details
+                  </button>
+                  <div class="footer-secondary">
+                    <button
+                      type="button"
+                      class="footer-action icon-only"
+                      (click)="shareReport($event, report)"
+                      aria-label="Share this report"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      class="footer-action icon-only"
+                      [class.saved]="isReportSaved(report.id)"
+                      (click)="toggleSaveReport($event, report.id)"
+                      [attr.aria-label]="
+                        isReportSaved(report.id) ? 'Remove from saved reports' : 'Save this report'
+                      "
+                      [attr.aria-pressed]="isReportSaved(report.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        [attr.fill]="isReportSaved(report.id) ? 'currentColor' : 'none'"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <ng-template #noReports>
+              <div class="empty-feed">
+                <div class="empty-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="64"
+                    height="64"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <polyline points="9 12 12 15 16 10"></polyline>
+                  </svg>
+                </div>
+                <h3>All Clear!</h3>
+                <p>No safety reports at this time.<br />The community is safe. Stay vigilant!</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End main-feed-layout -->
+  </div>
+  <!-- End dashboard-content -->
+</div>

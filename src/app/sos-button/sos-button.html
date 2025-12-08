@@ -1,0 +1,113 @@
+<div class="app-sos-button-container" *ngIf="isLoggedIn$ | async; else notLoggedIn">
+  <!-- SOS Button -->
+  <button class="app-sos-btn" (click)="triggerSos()" [disabled]="isDialing()">
+    {{ isDialing() ? 'Calling...' : 'EMERGENCY SOS' }}
+  </button>
+
+  <!-- 911 Dialer Modal -->
+  <div *ngIf="showDialer()" class="dialer-overlay" (click)="closeDialer()">
+    <div class="dialer-container" (click)="$event.stopPropagation()">
+      <div class="dialer-header">
+        <h3>Emergency Dialer</h3>
+        <button class="close-btn" (click)="closeDialer()">&times;</button>
+      </div>
+
+      <div class="dialer-display">
+        <div class="display-number">{{ dialedNumber() || '---' }}</div>
+        <div class="display-label">
+          {{ dialedNumber() === '911' ? 'EMERGENCY' : 'Dial 911 for emergency' }}
+        </div>
+      </div>
+
+      <div class="dialer-keypad">
+        <div *ngFor="let row of dialerPad" class="keypad-row">
+          <button
+            *ngFor="let key of row"
+            class="key-btn"
+            (click)="dialNumber(key)"
+            [disabled]="isDialing()"
+          >
+            {{ key }}
+          </button>
+        </div>
+      </div>
+
+      <div class="dialer-controls">
+        <button class="btn-backspace" (click)="backspace()" [disabled]="isDialing()">
+          Backspace
+        </button>
+        <button class="btn-clear" (click)="clearDial()" [disabled]="isDialing()">Clear</button>
+      </div>
+
+      <div class="dialer-actions">
+        <button
+          class="btn-call"
+          (click)="call()"
+          [disabled]="dialedNumber() !== '911' || isDialing()"
+        >
+          {{ isDialing() ? 'Calling...' : 'Call' }}
+        </button>
+      </div>
+
+      <div class="dialer-info">
+        <p>
+          <strong>SIMULATOR MODE:</strong><br />
+          This is a design/testing feature only. In a real emergency, a call to 911 would connect to
+          emergency services. Do not rely on this for actual emergencies.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fake Call Screen -->
+  <div *ngIf="showFakeCall()" class="fake-call-overlay">
+    <div class="fake-call-container">
+      <div class="call-header">
+        <p class="call-status">Emergency Call Active</p>
+        <div class="signal-indicator">
+          <span class="signal-dot active"></span>
+          <span class="signal-dot active"></span>
+          <span class="signal-dot active"></span>
+          <span class="signal-dot"></span>
+          <span class="signal-dot"></span>
+        </div>
+      </div>
+
+      <div class="call-content">
+        <div class="caller-avatar">911</div>
+        <div class="caller-info">
+          <h2>911 Dispatch</h2>
+          <p>Emergency Services</p>
+        </div>
+      </div>
+
+      <div class="call-timer">
+        <span class="timer-display">{{ callTimer() }}</span>
+      </div>
+
+      <div class="call-message">
+        <p>Connected to Emergency Services</p>
+        <p class="small-text">Simulated emergency call - Training Mode</p>
+      </div>
+
+      <div class="call-actions">
+        <button class="btn-speaker" title="Speaker">Speaker</button>
+        <button class="btn-mute" title="Mute">Mute</button>
+        <button class="btn-hangup" (click)="hangUp()">End Call</button>
+      </div>
+
+      <div class="call-footer">
+        <p>
+          <strong>SIMULATOR MODE:</strong><br />
+          This is a design/testing feature only. In a real emergency, location and emergency contact
+          information would be transmitted to 911 dispatch.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Not Logged In Template -->
+<ng-template #notLoggedIn>
+  <!-- SOS button hidden when not logged in -->
+</ng-template>

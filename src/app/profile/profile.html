@@ -1,0 +1,558 @@
+<!-- src/app/profile/profile.html -->
+<div class="profile-container">
+  <!-- Header -->
+  <header class="profile-header">
+    <button class="back-btn" (click)="goBack()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      Back
+    </button>
+    <h1>{{ isOwnProfile() ? 'My Profile' : 'User Profile' }}</h1>
+    <div class="header-spacer"></div>
+  </header>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading profile...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (errorMessage() && !isLoading()) {
+    <div class="error-banner">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- Success Message -->
+  @if (successMessage()) {
+    <div class="success-banner">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      {{ successMessage() }}
+    </div>
+  }
+
+  <!-- Profile Content -->
+  @if (profile() && !isLoading()) {
+    <div class="profile-content">
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <!-- Cover Photo -->
+        <div class="cover-photo">
+          <div class="cover-gradient"></div>
+        </div>
+
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+          <div class="avatar-wrapper">
+            @if (profile()?.photoURL) {
+              <img [src]="profile()?.photoURL" alt="Profile Photo" class="avatar-image" />
+            } @else {
+              <div class="avatar-placeholder">
+                {{ avatarInitials() }}
+              </div>
+            }
+            @if (isOwnProfile()) {
+              <label class="avatar-upload-btn" title="Change photo">
+                <input type="file" accept="image/*" (change)="uploadPhoto($event)" hidden />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                  ></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </label>
+            }
+          </div>
+
+          <!-- Role Badge -->
+          <div class="role-badge" [class.admin]="profile()?.role === 'admin'">
+            @if (profile()?.role === 'admin') {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+              </svg>
+              BCPO Admin
+            } @else {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              Citizen
+            }
+          </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info">
+          @if (!isEditMode()) {
+            <!-- View Mode -->
+            <h2 class="user-name">{{ profile()?.displayName }}</h2>
+            @if (profile()?.bio) {
+              <p class="user-bio">{{ profile()?.bio }}</p>
+            }
+
+            <!-- Verified Badge -->
+            @if (profile()?.isVerified) {
+              <div class="verified-badge">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 1L9.19 4.69 4.69 4.69 4.69 9.19 1 12l3.69 2.81 0 4.5h4.5L12 23l2.81-3.69h4.5l0-4.5L23 12l-3.69-2.81 0-4.5h-4.5L12 1zm-1.41 14.59L6 11l1.41-1.41 3.18 3.18 6-6L18 8.18l-7.41 7.41z"
+                  />
+                </svg>
+                Verified Account
+              </div>
+            }
+          } @else {
+            <!-- Edit Mode -->
+            <div class="edit-field">
+              <label>Display Name</label>
+              <input
+                type="text"
+                [value]="editForm().displayName"
+                (input)="updateFormField('displayName', $any($event.target).value)"
+                placeholder="Your name"
+              />
+            </div>
+            <div class="edit-field">
+              <label>Bio</label>
+              <textarea
+                [value]="editForm().bio"
+                (input)="updateFormField('bio', $any($event.target).value)"
+                placeholder="Tell us about yourself..."
+                rows="3"
+              ></textarea>
+            </div>
+          }
+        </div>
+
+        <!-- Action Buttons -->
+        @if (isOwnProfile()) {
+          <div class="action-buttons">
+            @if (!isEditMode()) {
+              <button class="btn-primary" (click)="toggleEditMode()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit Profile
+              </button>
+              <button class="btn-secondary" (click)="openPasswordModal()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Change Password
+              </button>
+            } @else {
+              <button class="btn-primary" (click)="saveProfile()" [disabled]="isSaving()">
+                @if (isSaving()) {
+                  <div class="btn-spinner"></div>
+                  Saving...
+                } @else {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Save Changes
+                }
+              </button>
+              <button class="btn-secondary" (click)="toggleEditMode()">Cancel</button>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Details Cards -->
+      <div class="details-grid">
+        <!-- Contact Information -->
+        <div class="details-card">
+          <h3>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              ></path>
+            </svg>
+            Contact Information
+          </h3>
+
+          @if (!isEditMode()) {
+            <div class="info-list">
+              @if (profile()?.privacy?.showEmail || isOwnProfile()) {
+                <div class="info-item">
+                  <span class="info-label">Email</span>
+                  <span class="info-value">{{ profile()?.email }}</span>
+                  @if (!profile()?.privacy?.showEmail && isOwnProfile()) {
+                    <span class="privacy-indicator">Private</span>
+                  }
+                </div>
+              }
+              @if ((profile()?.phoneNumber && profile()?.privacy?.showPhone) || isOwnProfile()) {
+                <div class="info-item">
+                  <span class="info-label">Phone</span>
+                  <span class="info-value">{{ profile()?.phoneNumber || 'Not set' }}</span>
+                  @if (!profile()?.privacy?.showPhone && isOwnProfile()) {
+                    <span class="privacy-indicator">Private</span>
+                  }
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="edit-field">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                [value]="editForm().phoneNumber"
+                (input)="updateFormField('phoneNumber', $any($event.target).value)"
+                placeholder="+63 9XX XXX XXXX"
+              />
+            </div>
+          }
+        </div>
+
+        <!-- Address -->
+        <div class="details-card">
+          <h3>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Address
+          </h3>
+
+          @if (!isEditMode()) {
+            <div class="info-list">
+              @if (
+                (profile()?.address?.street && profile()?.privacy?.showAddress) || isOwnProfile()
+              ) {
+                <div class="info-item">
+                  <span class="info-label">Street</span>
+                  <span class="info-value">{{ profile()?.address?.street || 'Not set' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Barangay</span>
+                  <span class="info-value">{{ profile()?.address?.barangay || 'Not set' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">City</span>
+                  <span class="info-value">{{ profile()?.address?.city || 'Baguio City' }}</span>
+                </div>
+                @if (!profile()?.privacy?.showAddress && isOwnProfile()) {
+                  <span class="privacy-indicator">Address is private</span>
+                }
+              } @else {
+                <p class="private-message">Address is private</p>
+              }
+            </div>
+          } @else {
+            <!-- Hierarchical Address: City → Barangay → Street -->
+            <p class="address-hierarchy-note">Baguio City, Philippines</p>
+
+            <!-- City (fixed to Baguio City) -->
+            <div class="edit-field">
+              <label>City</label>
+              <input type="text" [value]="'Baguio City'" readonly class="readonly-field" />
+            </div>
+
+            <!-- Barangay with auto-suggestions -->
+            <div class="edit-field barangay-field">
+              <label>Barangay <span class="required">*</span></label>
+              <div class="autocomplete-wrapper">
+                <input
+                  type="text"
+                  [value]="editForm().barangay"
+                  (input)="filterBarangays($event)"
+                  (focus)="filterBarangays($event)"
+                  (blur)="hideBarangaySuggestions()"
+                  placeholder="Start typing to search barangay..."
+                  autocomplete="off"
+                />
+                @if (showBarangaySuggestions() && filteredBarangays.length > 0) {
+                  <ul class="barangay-suggestions">
+                    @for (brgy of filteredBarangays.slice(0, 8); track brgy) {
+                      <li (mousedown)="selectBarangay(brgy)">{{ brgy }}</li>
+                    }
+                    @if (filteredBarangays.length > 8) {
+                      <li class="more-results">
+                        + {{ filteredBarangays.length - 8 }} more results
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+              <small class="field-hint">Select from 128 Baguio City barangays</small>
+            </div>
+
+            <!-- Street/Purok -->
+            <div class="edit-field">
+              <label>Street / Purok</label>
+              <input
+                type="text"
+                [value]="editForm().street"
+                (input)="updateFormField('street', $any($event.target).value)"
+                placeholder="e.g., Purok 5, Main Street"
+              />
+            </div>
+          }
+        </div>
+
+        <!-- Privacy Settings (Only visible to profile owner) -->
+        @if (isOwnProfile() && isEditMode()) {
+          <div class="details-card privacy-card">
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Privacy Settings
+            </h3>
+            <p class="privacy-note">Choose what others can see on your profile</p>
+
+            <div class="toggle-list">
+              <label class="toggle-item">
+                <input
+                  type="checkbox"
+                  [checked]="editForm().showEmail"
+                  (change)="updateFormField('showEmail', $any($event.target).checked)"
+                />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Show email address</span>
+              </label>
+              <label class="toggle-item">
+                <input
+                  type="checkbox"
+                  [checked]="editForm().showPhone"
+                  (change)="updateFormField('showPhone', $any($event.target).checked)"
+                />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Show phone number</span>
+              </label>
+              <label class="toggle-item">
+                <input
+                  type="checkbox"
+                  [checked]="editForm().showAddress"
+                  (change)="updateFormField('showAddress', $any($event.target).checked)"
+                />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Show address</span>
+              </label>
+            </div>
+          </div>
+        }
+
+        <!-- Activity Stats -->
+        <div class="details-card stats-card">
+          <h3>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            Activity
+          </h3>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value">{{ profile()?.stats?.reportsSubmitted || 0 }}</span>
+              <span class="stat-label">Reports</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">{{ profile()?.stats?.alertsReceived || 0 }}</span>
+              <span class="stat-label">Alerts</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">{{ profile()?.stats?.sosTriggered || 0 }}</span>
+              <span class="stat-label">SOS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Password Change Modal -->
+  @if (showPasswordModal()) {
+    <div class="modal-overlay" (click)="closePasswordModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Change Password</h3>
+          <button class="close-btn" (click)="closePasswordModal()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          @if (errorMessage()) {
+            <div class="error-message">{{ errorMessage() }}</div>
+          }
+
+          <div class="form-group">
+            <label>Current Password</label>
+            <input
+              type="password"
+              [value]="passwordForm().currentPassword"
+              (input)="updatePasswordField('currentPassword', $any($event.target).value)"
+              placeholder="Enter current password"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>New Password</label>
+            <input
+              type="password"
+              [value]="passwordForm().newPassword"
+              (input)="updatePasswordField('newPassword', $any($event.target).value)"
+              placeholder="Enter new password"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input
+              type="password"
+              [value]="passwordForm().confirmPassword"
+              (input)="updatePasswordField('confirmPassword', $any($event.target).value)"
+              placeholder="Confirm new password"
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="closePasswordModal()">Cancel</button>
+          <button class="btn-primary" (click)="changePassword()" [disabled]="isSaving()">
+            @if (isSaving()) {
+              <div class="btn-spinner"></div>
+              Changing...
+            } @else {
+              Change Password
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

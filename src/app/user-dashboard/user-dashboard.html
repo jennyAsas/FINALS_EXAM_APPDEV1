@@ -1,0 +1,100 @@
+<div class="user-dashboard-container">
+  <h2>Report Management</h2>
+  <p>View all approved incident reports in Baguio City.</p>
+
+  <div *ngIf="approvedReports$ | async as reports; else loading">
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filter-group search-group">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search by description, location, or reporter name..."
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-group">
+        <select [(ngModel)]="filterPriority" class="filter-select">
+          <option value="all">All Priorities</option>
+          <option value="high">High Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="low">Low Priority</option>
+        </select>
+      </div>
+
+      <div class="filter-group" *ngIf="uniqueBarangays.size > 0">
+        <select [(ngModel)]="filterBarangay" class="filter-select">
+          <option value="">All Barangays</option>
+          <option *ngFor="let brgy of barangayList" [value]="brgy">
+            {{ brgy }}
+          </option>
+        </select>
+      </div>
+
+      <button class="btn-reset" (click)="resetFilters()">Reset Filters</button>
+    </div>
+
+    <!-- Results Count -->
+    <div class="results-info" *ngIf="getFilteredReports(reports) as filteredReports">
+      <p *ngIf="reports.length > 0">
+        Showing <strong>{{ filteredReports.length }}</strong> of <strong>{{ reports.length }}</strong>
+        reports
+      </p>
+    </div>
+
+    <!-- Scrollable Reports Container -->
+    <div class="reports-scroll-container" *ngIf="getFilteredReports(reports) as filteredReports">
+      <ng-container *ngIf="filteredReports.length > 0; else noReports">
+        <div *ngFor="let report of filteredReports" class="report-card">
+          <div class="report-header">
+            <h3>{{ report.description }}</h3>
+            <span
+              class="status-badge approved"
+              [class]="'priority-' + (report.priority || 'medium')"
+            >
+              {{ report.priority || 'medium' | uppercase }}
+            </span>
+          </div>
+
+          <div class="report-details">
+            <p><strong>Location:</strong> {{ report.street }}, {{ report.barangay }}</p>
+            <p><strong>Reporter:</strong> {{ report.reporterName || 'N/A' }}</p>
+            <p>
+              <strong>Submitted:</strong> {{ report.createdAt | date: 'short' }}
+            </p>
+            @if (report.city) {
+              <p><strong>City:</strong> {{ report.city }}</p>
+            }
+            @if (report.location) {
+              <p class="gps-info">
+                <strong>GPS:</strong>
+                <span class="coords"
+                  >{{ report.location.lat | number: '1.4-4' }},
+                  {{ report.location.lng | number: '1.4-4' }}</span
+                >
+              </p>
+            }
+          </div>
+
+          <div *ngIf="report.imageUrl" class="report-image">
+            <img [src]="report.imageUrl" alt="Incident image" />
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noReports>
+        <div class="no-reports">
+          <p *ngIf="reports.length === 0">No approved reports available at this time.</p>
+          <p *ngIf="reports.length > 0 && getFilteredReports(reports).length === 0">
+            No reports match your search criteria.
+          </p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading">Loading reports...</div>
+  </ng-template>
+</div>

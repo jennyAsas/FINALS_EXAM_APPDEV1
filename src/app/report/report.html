@@ -1,0 +1,349 @@
+<main class="report-page scroll-reveal animate-on-load" role="main">
+  <div class="report-container" role="region" aria-labelledby="report-title">
+    <h2 id="report-title">Submit a Safety Alert</h2>
+    <p>Report safety concerns in your neighborhood. All fields marked with * are required.</p>
+
+    <ng-container *ngIf="authService.currentUser$ | async as user; else notLogged">
+      <form (ngSubmit)="onSubmit()" #reportForm="ngForm" aria-describedby="form-status">
+        <div
+          *ngIf="successMessage"
+          class="message success"
+          role="status"
+          aria-live="polite"
+          id="form-status"
+        >
+          {{ successMessage }}
+        </div>
+        <div
+          *ngIf="errorMessage"
+          class="message error"
+          role="alert"
+          aria-live="assertive"
+          id="form-status"
+        >
+          {{ errorMessage }}
+        </div>
+
+        <!-- Reporter Information Section -->
+        <fieldset class="form-section scroll-reveal animate-on-load">
+          <legend class="section-title">Reporter Information</legend>
+
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input
+              id="fullName"
+              type="text"
+              name="fullName"
+              [(ngModel)]="fullName"
+              required
+              placeholder="Enter your full name"
+              aria-required="true"
+              autocomplete="name"
+              [attr.aria-invalid]="validationErrors['fullName'] ? 'true' : null"
+              [attr.aria-describedby]="validationErrors['fullName'] ? 'fullName-error' : null"
+            />
+            <span
+              *ngIf="validationErrors['fullName']"
+              class="error-text"
+              id="fullName-error"
+              role="alert"
+            >
+              {{ validationErrors['fullName'] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              placeholder="your.email@example.com"
+              aria-required="true"
+              autocomplete="email"
+              [attr.aria-invalid]="validationErrors['email'] ? 'true' : null"
+              [attr.aria-describedby]="validationErrors['email'] ? 'email-error' : null"
+            />
+            <span
+              *ngIf="validationErrors['email']"
+              class="error-text"
+              id="email-error"
+              role="alert"
+            >
+              {{ validationErrors['email'] }}
+            </span>
+          </div>
+        </fieldset>
+
+        <!-- Safety Alert Details Section -->
+        <fieldset class="form-section scroll-reveal animate-on-load">
+          <legend class="section-title">Safety Alert Details</legend>
+
+          <div class="form-group">
+            <label for="description">Describe the Safety Concern *</label>
+            <textarea
+              id="description"
+              name="description"
+              [(ngModel)]="description"
+              (blur)="saveFormProgress()"
+              rows="5"
+              required
+              placeholder="Describe what happened in detail..."
+              aria-required="true"
+              [attr.aria-invalid]="validationErrors['description'] ? 'true' : null"
+              [attr.aria-describedby]="validationErrors['description'] ? 'description-error' : null"
+            ></textarea>
+            <span
+              *ngIf="validationErrors['description']"
+              class="error-text"
+              id="description-error"
+              role="alert"
+            >
+              {{ validationErrors['description'] }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="priority">Priority Level *</label>
+            <select
+              id="priority"
+              name="priority"
+              [(ngModel)]="priority"
+              (blur)="saveFormProgress()"
+              required
+              aria-required="true"
+            >
+              <option value="low">Info - General information, no immediate concern</option>
+              <option value="medium">Alert - Moderate concern, needs attention</option>
+              <option value="high">Urgent - Requires immediate action</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <!-- Location Information Section -->
+        <fieldset class="form-section scroll-reveal animate-on-load">
+          <legend class="section-title">Location Information</legend>
+          <p class="hierarchy-note">Baguio City, Philippines</p>
+
+          <!-- Map Picker - Moved to top -->
+          <div class="form-group location-info">
+            <label id="map-label">Pin Location on Map</label>
+            <p class="help-text" id="map-help">
+              Click on the map to mark the exact incident location. The address fields below will
+              update automatically.
+            </p>
+
+            <button
+              type="button"
+              class="map-picker-btn"
+              (click)="toggleInteractiveMap()"
+              aria-describedby="map-help"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              {{ showInteractiveMap ? 'Hide Location Map' : 'Select Location on Map' }}
+            </button>
+
+            <div
+              *ngIf="showInteractiveMap"
+              class="interactive-map-wrapper"
+              role="application"
+              aria-label="Interactive location picker map"
+            >
+              <app-interactive-location-picker
+                (locationSelected)="onMapLocationSelected($event)"
+                [defaultLocation]="location || { lat: 16.4023, lng: 120.5961 }"
+                [barangayInput]="barangay"
+                [streetInput]="street"
+              ></app-interactive-location-picker>
+            </div>
+
+            <span *ngIf="validationErrors['location']" class="error-text" role="alert">
+              {{ validationErrors['location'] }}
+            </span>
+          </div>
+
+          <!-- City (fixed) -->
+          <div class="form-group">
+            <label for="city">City</label>
+            <input
+              id="city"
+              type="text"
+              name="city"
+              [(ngModel)]="city"
+              readonly
+              class="readonly-field"
+              aria-readonly="true"
+            />
+          </div>
+
+          <!-- Barangay with auto-suggestions -->
+          <div class="form-group barangay-group">
+            <label for="barangay">Barangay *</label>
+            <input
+              id="barangay"
+              type="text"
+              name="barangay"
+              [(ngModel)]="barangay"
+              (input)="filterBarangays($event)"
+              (focus)="showBarangaySuggestions = true"
+              (blur)="onBarangayBlur(); hideBarangaySuggestions()"
+              required
+              placeholder="Start typing to search from 128 barangays..."
+              autocomplete="off"
+              aria-required="true"
+              role="combobox"
+              aria-expanded="false"
+              aria-autocomplete="list"
+              [attr.aria-controls]="
+                showBarangaySuggestions && filteredBarangays.length > 0
+                  ? 'barangay-suggestions'
+                  : null
+              "
+              [attr.aria-invalid]="validationErrors['barangay'] ? 'true' : null"
+              [attr.aria-describedby]="validationErrors['barangay'] ? 'barangay-error' : null"
+            />
+            <ul
+              *ngIf="showBarangaySuggestions && filteredBarangays.length > 0"
+              class="barangay-suggestions"
+              id="barangay-suggestions"
+              role="listbox"
+              aria-label="Barangay suggestions"
+              (mousedown)="$event.preventDefault()"
+            >
+              <li
+                *ngFor="let brgy of filteredBarangays.slice(0, 8)"
+                class="suggestion-item"
+                role="option"
+                (click)="selectBarangay(brgy)"
+              >
+                {{ brgy }}
+              </li>
+              <li *ngIf="filteredBarangays.length > 8" class="suggestion-more" role="status">
+                + {{ filteredBarangays.length - 8 }} more results
+              </li>
+            </ul>
+            <span
+              *ngIf="validationErrors['barangay']"
+              class="error-text"
+              id="barangay-error"
+              role="alert"
+            >
+              {{ validationErrors['barangay'] }}
+            </span>
+          </div>
+
+          <!-- Street/Purok -->
+          <div class="form-group">
+            <label for="street">Street / Purok *</label>
+            <input
+              id="street"
+              type="text"
+              name="street"
+              [(ngModel)]="street"
+              (blur)="saveFormProgress()"
+              (input)="onStreetChange()"
+              required
+              placeholder="e.g., Purok 3, Session Road"
+              aria-required="true"
+              [attr.aria-invalid]="validationErrors['street'] ? 'true' : null"
+              [attr.aria-describedby]="validationErrors['street'] ? 'street-error' : null"
+            />
+            <span
+              *ngIf="validationErrors['street']"
+              class="error-text"
+              id="street-error"
+              role="alert"
+            >
+              {{ validationErrors['street'] }}
+            </span>
+          </div>
+
+          <!-- Landmark -->
+          <div class="form-group">
+            <label for="landmark">Landmark or Nearby Location (Optional)</label>
+            <input
+              id="landmark"
+              type="text"
+              name="landmark"
+              [(ngModel)]="landmark"
+              (blur)="saveFormProgress()"
+              placeholder="e.g., Near Burnham Park, In front of SM Baguio"
+            />
+          </div>
+        </fieldset>
+
+        <!-- Evidence Section -->
+        <fieldset class="form-section scroll-reveal animate-on-load">
+          <legend class="section-title">Evidence</legend>
+
+          <div class="form-group">
+            <label for="proofImage">Photo of Incident (Optional)</label>
+            <input
+              id="proofImage"
+              type="file"
+              name="proofImage"
+              accept="image/*"
+              (change)="onProofImageSelected($event)"
+              aria-describedby="proofImage-help"
+            />
+            <p class="help-text" id="proofImage-help">
+              Upload a clear photo of the incident. Maximum 5MB. This helps with verification.
+            </p>
+
+            <div *ngIf="proofImageFileName" class="image-preview-container">
+              <p class="file-name">
+                Selected file: <strong>{{ proofImageFileName }}</strong>
+              </p>
+              <div *ngIf="proofImageUrl" class="image-preview">
+                <img [src]="proofImageUrl" alt="Preview of uploaded incident photo" />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="isLoading"
+          class="submit-btn"
+          [attr.aria-busy]="isLoading"
+        >
+          {{ isLoading ? 'Submitting Alert...' : 'Submit Safety Alert' }}
+        </button>
+      </form>
+    </ng-container>
+
+    <ng-template #notLogged>
+      <div class="not-logged" role="alert">
+        <div class="auth-prompt-box">
+          <h3>Authentication Required</h3>
+          <p class="login-warning">
+            You need to create an account or sign in before you can submit a safety alert.
+          </p>
+          <p class="help-text">
+            Creating an account helps us verify reports and keep the community safe.
+          </p>
+          <div class="action-row" role="group" aria-label="Authentication options">
+            <a class="btn login-btn" routerLink="/login">Sign In</a>
+            <span class="or-text" aria-hidden="true">or</span>
+            <a class="btn signup-btn" routerLink="/login">Sign Up</a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</main>

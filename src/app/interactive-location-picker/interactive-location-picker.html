@@ -1,0 +1,162 @@
+<div class="location-picker-container">
+  <!-- Search Bar -->
+  <div class="search-bar-wrapper">
+    <input
+      type="text"
+      class="location-search-input"
+      placeholder="Search for streets, barangays, or landmarks in Baguio City..."
+      [(ngModel)]="searchQuery"
+      (input)="onSearchInput()"
+      (focus)="onSearchFocus()"
+      [disabled]="isLoading"
+    />
+    <button
+      class="search-btn"
+      (click)="searchLocation()"
+      [disabled]="!searchQuery || isLoading"
+      title="Search location in Baguio City"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+    </button>
+    <div class="spinner" *ngIf="isLoading"></div>
+  </div>
+  <p class="search-help-text">
+    Type to search and select from suggestions below, or click on the map
+  </p>
+
+  <!-- Suggestions Dropdown (appears below search bar) -->
+  <div class="search-suggestions" *ngIf="searchSuggestions.length > 0 && showSuggestions">
+    <div class="suggestions-header">
+      <span>Locations in Baguio City</span>
+      <button class="close-suggestions" (click)="closeSuggestions()" title="Close suggestions">
+        ✕
+      </button>
+    </div>
+    <div
+      class="suggestion-item"
+      *ngFor="let suggestion of searchSuggestions"
+      (click)="selectSuggestion(suggestion)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+        />
+      </svg>
+      <div class="suggestion-content">
+        <strong>{{ suggestion.name }}</strong>
+        <small>{{ suggestion.address }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Container -->
+  <div class="map-wrapper">
+    <!-- Warning notification for outside Baguio -->
+    <div class="outside-baguio-warning" *ngIf="outsideBaguioWarning">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+        />
+      </svg>
+      <span
+        >This location is outside Baguio City. Please select a location within Baguio City
+        only.</span
+      >
+    </div>
+    <div class="map-container" #mapContainer></div>
+    <div class="pin-instruction">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+        ></path>
+      </svg>
+      Click to drop pin • Drag to move
+    </div>
+  </div>
+
+  <!-- Address Display and Confirm Button -->
+  <div class="address-section">
+    <div class="address-display" *ngIf="currentLocation.address">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <span>{{ currentLocation.address }}</span>
+    </div>
+
+    <!-- Location Confirmed Message - Simple version -->
+    <div class="location-confirmed-message" *ngIf="locationConfirmed">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+        />
+      </svg>
+      <span>Location saved!</span>
+    </div>
+
+    <button
+      type="button"
+      class="confirm-location-btn"
+      [class.confirmed]="locationConfirmed"
+      (click)="confirmLocation()"
+      [disabled]="!isLocationValid()"
+      title="Save this location to the form fields"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      {{ locationConfirmed ? 'Location Saved' : 'Save Location to Form' }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,992 @@
+{
+  "mapCount": 123,
+  "reportCount": 0,
+  "mapIssues": [],
+  "reportIssues": [],
+  "diffs": [
+    {
+      "barangay": "A. Bonifacio-Caguioa-Rimando (ABCR)",
+      "map": [
+        16.41,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Abanao-Zandueta-Kayong-Chugum-Otek (AZKCO)",
+      "map": [
+        16.395,
+        120.595
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Alfonso Tabora",
+      "map": [
+        16.42,
+        120.575
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Ambiong",
+      "map": [
+        16.425,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Andres Bonifacio (Lower Bokawkan)",
+      "map": [
+        16.405,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Apugan-Loakan",
+      "map": [
+        16.435,
+        120.545
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Asin Road",
+      "map": [
+        16.415,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Atok Trail",
+      "map": [
+        16.43,
+        120.555
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Aurora Hill Proper (Malvar-Sgt. Floresca)",
+      "map": [
+        16.422,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Aurora Hill, North Central",
+      "map": [
+        16.428,
+        120.582
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Aurora Hill, South Central",
+      "map": [
+        16.415,
+        120.582
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bagong Lipunan (Market Area)",
+      "map": [
+        16.41,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Baguio Dairy Farm",
+      "map": [
+        16.405,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bakakeng Central",
+      "map": [
+        16.415,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bakakeng North",
+      "map": [
+        16.42,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bal-Marcoville (Marcoville)",
+      "map": [
+        16.425,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Balsigan",
+      "map": [
+        16.43,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bayan Park East",
+      "map": [
+        16.418,
+        120.61
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bayan Park Village",
+      "map": [
+        16.415,
+        120.608
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Bayan Park West (Bayan Park)",
+      "map": [
+        16.412,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "BGH Compound",
+      "map": [
+        16.42,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Brookside",
+      "map": [
+        16.408,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Brookspoint",
+      "map": [
+        16.41,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "s Camp",
+      "map": [
+        16.425,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Camdas Subdivision",
+      "map": [
+        16.42,
+        120.575
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Camp 7",
+      "map": [
+        16.43,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Camp 8",
+      "map": [
+        16.435,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Camp Allen",
+      "map": [
+        16.425,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Campo Filipino",
+      "map": [
+        16.42,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "City Camp Central",
+      "map": [
+        16.415,
+        120.575
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "City Camp Proper",
+      "map": [
+        16.418,
+        120.572
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Country Club Village",
+      "map": [
+        16.43,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Cresencia Village",
+      "map": [
+        16.408,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Dagisitan",
+      "map": [
+        16.405,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Dagsian, Lower",
+      "map": [
+        16.41,
+        120.595
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Dagsian, Upper",
+      "map": [
+        16.415,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Dizon Subdivision",
+      "map": [
+        16.425,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Dominican Hill-Mirador",
+      "map": [
+        16.428,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Dontogan",
+      "map": [
+        16.42,
+        120.55
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "DPS Area",
+      "map": [
+        16.41,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": " Hill",
+      "map": [
+        16.435,
+        120.595
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Fairview Village",
+      "map": [
+        16.415,
+        120.625
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Ferdinand (Happy Homes-Campo Sioco)",
+      "map": [
+        16.425,
+        120.61
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Fort del Pilar",
+      "map": [
+        16.408,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Gabriel Silang",
+      "map": [
+        16.4,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "General Emilio F. Aguinaldo (Quirino-Magsaysay, Upper)",
+      "map": [
+        16.43,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "General Luna, Lower",
+      "map": [
+        16.42,
+        120.575
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "General Luna, Upper",
+      "map": [
+        16.425,
+        120.575
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Gibraltar",
+      "map": [
+        16.435,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Greenwater Village",
+      "map": [
+        16.418,
+        120.635
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Guisad Central",
+      "map": [
+        16.41,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Guisad Sorong",
+      "map": [
+        16.405,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Happy Hollow",
+      "map": [
+        16.425,
+        120.555
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Happy Homes (Happy Homes-Lucban)",
+      "map": [
+        16.43,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Harrison-Claudio Carantes",
+      "map": [
+        16.415,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Hillside",
+      "map": [
+        16.42,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Holy Ghost Extension",
+      "map": [
+        16.425,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Holy Ghost Proper",
+      "map": [
+        16.42,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Imelda Village",
+      "map": [
+        16.408,
+        120.592
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Kias",
+      "map": [
+        16.4,
+        120.595
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Laughwood",
+      "map": [
+        16.432,
+        120.555
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Legion Valley",
+      "map": [
+        16.422,
+        120.61
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Loakan",
+      "map": [
+        16.438,
+        120.548
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Lower Quezon Hill",
+      "map": [
+        16.42,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Lualhati Subdivision",
+      "map": [
+        16.428,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Lucban",
+      "map": [
+        16.432,
+        120.608
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Luneta",
+      "map": [
+        16.41,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Marcos Highway-Cuayan",
+      "map": [
+        16.438,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Mauro Navarro",
+      "map": [
+        16.418,
+        120.588
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Midland",
+      "map": [
+        16.415,
+        120.625
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Military Cut-Off",
+      "map": [
+        16.42,
+        120.55
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Minuayan",
+      "map": [
+        16.4,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Modesto Avenue-Kuntaran",
+      "map": [
+        16.415,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Mount Pisgah",
+      "map": [
+        16.428,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Mountain View",
+      "map": [
+        16.435,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Nangal",
+      "map": [
+        16.432,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "New Military Cut-Off",
+      "map": [
+        16.422,
+        120.545
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "New Vizta",
+      "map": [
+        16.425,
+        120.625
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Newville",
+      "map": [
+        16.43,
+        120.625
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Norberte Lubrica",
+      "map": [
+        16.412,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "North Fairview",
+      "map": [
+        16.42,
+        120.63
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "North Ridge",
+      "map": [
+        16.435,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "North San Jose",
+      "map": [
+        16.425,
+        120.64
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Palma Real",
+      "map": [
+        16.415,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Pacdal",
+      "map": [
+        16.405,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Penthouse",
+      "map": [
+        16.432,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Pines Village",
+      "map": [
+        16.438,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Pisgah Valley",
+      "map": [
+        16.43,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Quirino (Government Center)",
+      "map": [
+        16.412,
+        120.595
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Quirino Eastern Road",
+      "map": [
+        16.425,
+        120.6
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Samel",
+      "map": [
+        16.395,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "San Antonio (Camp John Hay)",
+      "map": [
+        16.418,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "San Juan",
+      "map": [
+        16.402,
+        120.575
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "San Luis",
+      "map": [
+        16.408,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "San Roque",
+      "map": [
+        16.42,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "San Vicente",
+      "map": [
+        16.415,
+        120.555
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Sanggalang",
+      "map": [
+        16.405,
+        120.555
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Santa Rosa (Carmelo)",
+      "map": [
+        16.395,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Seafront",
+      "map": [
+        16.4,
+        120.63
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Session Road",
+      "map": [
+        16.415,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Shamrock",
+      "map": [
+        16.432,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Simot",
+      "map": [
+        16.398,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "South Drive",
+      "map": [
+        16.41,
+        120.62
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "South San Jose",
+      "map": [
+        16.42,
+        120.645
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Southland",
+      "map": [
+        16.41,
+        120.64
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Stepping Stone",
+      "map": [
+        16.428,
+        120.615
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Stonehill Subdivision",
+      "map": [
+        16.438,
+        120.62
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Sunburst",
+      "map": [
+        16.435,
+        120.625
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Supplemen",
+      "map": [
+        16.402,
+        120.565
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Tahak",
+      "map": [
+        16.392,
+        120.58
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Teacher Camp",
+      "map": [
+        16.422,
+        120.59
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Tegaleg",
+      "map": [
+        16.4,
+        120.56
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "The Terraces",
+      "map": [
+        16.432,
+        120.61
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Tirol",
+      "map": [
+        16.395,
+        120.605
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Tomay",
+      "map": [
+        16.395,
+        120.57
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Transcoville",
+      "map": [
+        16.408,
+        120.64
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Trinoma Heights",
+      "map": [
+        16.425,
+        120.635
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Upper Quezon Hill",
+      "map": [
+        16.43,
+        120.585
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Upper Session Road",
+      "map": [
+        16.42,
+        120.61
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Vizta Futura",
+      "map": [
+        16.432,
+        120.63
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "West Side",
+      "map": [
+        16.412,
+        120.64
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Westville",
+      "map": [
+        16.418,
+        120.645
+      ],
+      "reason": "missing_in_one"
+    },
+    {
+      "barangay": "Woodlands",
+      "map": [
+        16.428,
+        120.62
+      ],
+      "reason": "missing_in_one"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!-- src/app/alert-form/alert-form.html -->
+<div class="alert-form-container">
+  <div class="form-card">
+    <h2 class="form-title">Safety Alert</h2>
+    
+    <form (ngSubmit)="submitAlert()">
+      <!-- Alert Message -->
+      <div class="form-group">
+        <label for="message" class="form-label">Alert Message</label>
+        <textarea
+          id="message"
+          [(ngModel)]="alertData.message"
+          name="message"
+          placeholder="Describe the safety concern..."
+          class="form-input textarea"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- Priority Level -->
+      <div class="form-group">
+        <label for="priority" class="form-label">Priority Level</label>
+        <select
+          id="priority"
+          [(ngModel)]="alertData.priority"
+          name="priority"
+          class="form-input select"
+        >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn">Issue Alert</button>
+    </form>
+  </div>
+</div>
