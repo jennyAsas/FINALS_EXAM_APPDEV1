@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { Data } from './data';
 import { Observable, of, from } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,7 @@ export class AuthService {
   private auth = inject(FirebaseAuth);
   private router = inject(Router);
   private data = inject(Data);
+  private functions = inject(Functions);
 
   // Observable to track the current Firebase user state (null if logged out)
   currentUser$ = user(this.auth);
@@ -44,11 +46,23 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login successful for:', userCredential.user.email);
 
+      // Verify admin status for primary admin (jennyasas14@gmail.com)
+      try {
+        const verifyAdmin = httpsCallable(this.functions, 'verifyAdminOnSignIn');
+        await verifyAdmin({});
+        console.log('Admin verification completed');
+      } catch (verifyError) {
+        console.warn('Admin verification skipped:', verifyError);
+      }
+
+      // Force token refresh to get updated claims
+      await userCredential.user.getIdToken(true);
+
       // redirect based on admin claim
       try {
         const u: any = this.auth.currentUser;
         if (u) {
-          const tokenResult = await u.getIdTokenResult();
+          const tokenResult = await u.getIdTokenResult(true); // Force refresh
           const isAdmin = !!tokenResult.claims?.admin;
           console.log('User admin status:', isAdmin);
           this.router.navigate([isAdmin ? '/admin-dashboard' : '/dashboard']);
