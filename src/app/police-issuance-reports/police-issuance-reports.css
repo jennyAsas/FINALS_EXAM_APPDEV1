@@ -4,6 +4,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #0d1a3d 0%, #1a2a5e 50%, #0d1a3d 100%);
   padding: 12px 12px 32px 12px;
+  color: black;
 }
 
 .page-header {
