@@ -327,12 +327,13 @@
 .feed-header-bar {
   background: white;
   border-radius: 18px;
-  padding: 18px 28px;
+  padding: 14px 18px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .feed-title {
@@ -346,9 +347,11 @@
 
 .feed-nav-filters {
   display: flex;
-  gap: 12px;
-  flex: 0 0 auto;
+  gap: 10px;
+  flex: 1 1 0;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   margin-left: auto;
 }
 
@@ -1100,7 +1103,7 @@
 
   .feed-header-bar {
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     padding: 10px 12px;
   }
   
@@ -1110,13 +1113,14 @@
   }
   
   .feed-nav-filters {
-    flex: none;
-    width: auto;
+    flex: 1 1 0;
+    width: 100%;
+    gap: 8px;
   }
   
   .feed-search {
-    flex: 1;
-    min-width: 120px;
+    flex: 1 1 160px;
+    min-width: 140px;
   }
   
   .feed-section-header {
@@ -1141,13 +1145,13 @@
   }
   
   .feed-cards {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
   }
   
   .feed-card {
-    border-radius: 18px;
-    min-height: 260px;
+    border-radius: 16px;
+    min-height: 240px;
   }
   
   .card-header {
@@ -1361,9 +1365,9 @@
     left: 12px;
     bottom: 16px;
     gap: 8px;
-  }
-  
-  .fab-btn {
+    left: 16px;
+    bottom: 20px;
+    gap: 10px;
     height: 42px;
     padding: 0 12px 0 10px;
     gap: 8px;
@@ -2530,20 +2534,19 @@
 }
 
 .detail-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
+    height: 44px;
+    padding: 0 14px 0 12px;
+    gap: 10px;
+    border-radius: 22px;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.detail-icon.location {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-}
-
-.detail-icon.location::before {
+  
+  .fab-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .fab-label {
+    font-size: 12px;
   content: '';
   width: 12px;
   height: 12px;
