@@ -1,5 +1,7 @@
 /* safety-feed.css - Bootstrap + CSS only - Responsive */
 
+/* ===== PHASE 2: MOBILE-FIRST CARD MINIMIZATION (MBOK) ===== */
+
 .safety-feed-container {
     padding: 30px;
     max-width: 1200px;
@@ -7,6 +9,13 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+}
+
+/* Mobile-First: Minimize padding below 600px */
+@media (max-width: 600px) {
+    .safety-feed-container {
+        padding: 15px 10px; /* Reduced from 30px to 15px */
+    }
 }
 
 @media (max-width: 768px) {
@@ -363,6 +372,27 @@
 @media (max-width: 768px) {
     .empty-feed {
         padding: 30px 15px;
+    }
+}
+
+/* Mobile-First: Minimize "All Clear" section below 600px */
+@media (max-width: 600px) {
+    .empty-feed {
+        padding: 20px 10px; /* Reduced padding */
+    }
+    
+    .empty-feed p {
+        font-size: 0.9em; /* Slightly decreased font size */
+    }
+    
+    /* If there's a shield icon, reduce its size */
+    .empty-feed svg,
+    .empty-feed img,
+    .empty-feed .icon {
+        width: 48px;
+        height: 48px;
+        max-width: 48px;
+        max-height: 48px;
     }
 }
 

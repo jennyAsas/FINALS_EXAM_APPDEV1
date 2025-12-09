@@ -32,11 +32,14 @@
   }
 }
 
-/* Main SOS Button */
+/* Main SOS Button - WCAG 2.5.5 Compliant (44px minimum) */
 .app-sos-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: auto;
   min-width: 180px;
+  min-height: 44px; /* WCAG 2.5.5 minimum touch target */
   padding: 14px 22px;
   font-size: 1.2rem;
   font-weight: 800;
@@ -145,7 +148,18 @@
 
 .dialer-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
 .dialer-header h3 { margin:0; font-size:1.25rem; background:linear-gradient(135deg,#ff6b6b,#ee5a6f); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:800; }
-.close-btn { background:none; border:none; color:#bbb; font-size:1.6rem; cursor:pointer; }
+.close-btn { 
+  background:none; 
+  border:none; 
+  color:#bbb; 
+  font-size:1.6rem; 
+  cursor:pointer; 
+  min-width: 44px; /* WCAG 2.5.5 touch target */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .dialer-display { background:#000; padding:18px; border-radius:8px; text-align:center; margin-bottom:14px; border:2px solid #d32f2f; }
 .display-number { font-family: 'Courier New', monospace; font-size: clamp(1.6rem, 5vw, 2.6rem); color:#00ff66; letter-spacing:4px; }
@@ -153,12 +167,46 @@
 
 .dialer-keypad { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
 .keypad-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-.key-btn { padding: clamp(8px, 2.4vw, 14px); font-size: clamp(1rem, 2.6vw, 1.3rem); background:#444; color:#fff; border-radius:8px; border:1px solid #666; cursor:pointer; }
+.key-btn { 
+  padding: clamp(8px, 2.4vw, 14px); 
+  font-size: clamp(1rem, 2.6vw, 1.3rem); 
+  min-height: 44px; /* WCAG 2.5.5 touch target */
+  min-width: 44px;
+  background:#444; 
+  color:#fff; 
+  border-radius:8px; 
+  border:1px solid #666; 
+  cursor:pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 .key-btn:hover:not([disabled]) { background:#555; }
 
 .dialer-controls { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-.btn-backspace, .btn-clear { padding:10px; border-radius:8px; background:#666; color:#fff; border:1px solid #888; }
-.btn-call { width:100%; padding:12px; border-radius:8px; background:#d32f2f; color:#fff; border:none; }
+.btn-backspace, .btn-clear { 
+  padding:10px; 
+  min-height: 44px; /* WCAG 2.5.5 */
+  border-radius:8px; 
+  background:#666; 
+  color:#fff; 
+  border:1px solid #888;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-call { 
+  width:100%; 
+  padding:12px; 
+  min-height: 48px; /* Larger for primary action */
+  border-radius:8px; 
+  background:#d32f2f; 
+  color:#fff; 
+  border:none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .dialer-info { background: rgba(211,47,47,0.08); border:1px solid rgba(211,47,47,0.12); border-radius:8px; padding:10px; color:#ffb3b3; text-align:center; }
 
