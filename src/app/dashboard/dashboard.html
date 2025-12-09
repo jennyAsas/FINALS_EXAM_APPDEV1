@@ -97,76 +97,6 @@
   }
 
   <div class="dashboard-content">
-    <!-- Left FAB Stack: Floating overlay buttons with labels -->
-    <nav class="fab-stack" aria-label="Quick actions">
-      <!-- Police Issuance Reports FAB -->
-      <a
-        routerLink="/police-reports"
-        class="fab-btn alerts-fab"
-        aria-label="View Police Issuance Reports"
-        role="button"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
-        </svg>
-        <span class="fab-label">Police Reports</span>
-      </a>
-
-      <!-- Map FAB -->
-      <button
-        type="button"
-        class="fab-btn map-fab"
-        (click)="viewFullMap()"
-        aria-label="View Incident Map"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-          <circle cx="12" cy="10" r="3"></circle>
-        </svg>
-        <span class="fab-label">Incident Map</span>
-      </button>
-
-      <!-- SOS FAB -->
-      <button
-        type="button"
-        class="fab-btn sos-fab"
-        (click)="triggerSOS()"
-        aria-label="Trigger Emergency SOS"
-        [class.disabled]="!(currentUser$ | async)"
-        [attr.aria-disabled]="!(currentUser$ | async)"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <polygon
-            points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
-          ></polygon>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        <span class="fab-label">Emergency SOS</span>
-      </button>
-    </nav>
-
     <!-- Main Content - Modern Social Feed Layout -->
     <main class="main-feed-layout" role="region" aria-labelledby="feed-title">
       <!-- Primary Feed Column -->
@@ -174,6 +104,44 @@
         <!-- Compact Feed Header with Filters -->
         <header class="feed-header-bar scroll-reveal animate-on-load">
           <h2 class="feed-title" id="feed-title">Community Safety Feed</h2>
+          <!-- Quick Action Buttons -->
+          <div class="quick-actions-header">
+            <a
+              routerLink="/police-reports"
+              class="action-btn police-btn"
+              aria-label="View Police Reports"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+              </svg>
+              <span>Police Reports</span>
+            </a>
+            <button
+              type="button"
+              class="action-btn map-btn"
+              (click)="viewFullMap()"
+              aria-label="View Incident Map"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Incident Map</span>
+            </button>
+            <button
+              type="button"
+              class="action-btn sos-btn"
+              (click)="triggerSOS()"
+              aria-label="Trigger Emergency SOS"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>Emergency SOS</span>
+            </button>
+          </div>
           <div class="feed-search" role="search">
             <svg
               xmlns="http://www.w3.org/2000/svg"

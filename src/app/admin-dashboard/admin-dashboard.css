@@ -160,9 +160,16 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-table {
-    width: 100%;
+.reports-table table {
+    font-size: 0.9rem;
     border-collapse: collapse;
+    width: 100%;
+}
+
+.reports-table th,
+.reports-table td {
+    padding: 8px 12px;
+    text-align: left;
 }
 
 th {

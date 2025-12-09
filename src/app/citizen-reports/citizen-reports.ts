@@ -1,24 +1,30 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ReportService, Report } from '../report.service';
+import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, tap } from 'rxjs/operators';
 
 @Component({
   standalone: true,
   selector: 'app-citizen-reports',
   templateUrl: './citizen-reports.html',
   styleUrls: ['./citizen-reports.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
 })
-export class CitizenReports implements OnInit {
+export class CitizenReports implements OnInit, AfterViewInit {
   private reportService = inject(ReportService);
+  private router = inject(Router);
+
+  @ViewChild('reportsWrapper', { static: false }) reportsWrapper?: ElementRef;
 
   searchQuery = new BehaviorSubject<string>('');
 
   private allApprovedReports$ = this.reportService.getAllReports().pipe(
     map((reports) => reports.filter((r) => r.status === 'approved')),
+    tap(() => this.scrollToTop()), // Scroll to top whenever reports update
   );
 
   // Combine search query with reports for real-time filtering
@@ -56,6 +62,24 @@ export class CitizenReports implements OnInit {
     // Initialize component
   }
 
+  ngAfterViewInit(): void {
+    // Ensure scroll to top on initial load
+    setTimeout(() => this.scrollToTop(), 100);
+  }
+
+  private scrollToTop(): void {
+    // Scroll the reports wrapper to the top
+    if (this.reportsWrapper) {
+      this.reportsWrapper.nativeElement.scrollTop = 0;
+    }
+    
+    // Also scroll the window/page to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
   // trackBy helper for *ngFor
   trackById(index: number, item: any): string | number {
     return item?.id ?? index;
@@ -63,10 +87,25 @@ export class CitizenReports implements OnInit {
 
   onSearchChange(query: string): void {
     this.searchQuery.next(query);
+    // Scroll to top when search changes
+    setTimeout(() => this.scrollToTop(), 50);
   }
 
   clearSearch(): void {
     this.searchQuery.next('');
+    // Scroll to top when search is cleared
+    setTimeout(() => this.scrollToTop(), 50);
+  }
+
+  viewMap(): void {
+    // Navigate to map view
+    this.router.navigate(['/map']);
+  }
+
+  triggerSOS(): void {
+    // Trigger SOS action
+    console.log('SOS triggered');
+    // You can add the actual SOS logic here
   }
 
   getPriorityClass(priority?: string): string {

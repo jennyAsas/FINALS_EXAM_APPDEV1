@@ -46,34 +46,16 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login successful for:', userCredential.user.email);
 
-      // Verify admin status for primary admin (jennyasas14@gmail.com)
-      try {
-        const verifyAdmin = httpsCallable(this.functions, 'verifyAdminOnSignIn');
-        await verifyAdmin({});
-        console.log('Admin verification completed');
-      } catch (verifyError) {
-        console.warn('Admin verification skipped:', verifyError);
+      // Check if the logged-in user is the primary admin
+      if (email === 'jennyasas1@gmail.com') {
+        console.log('Primary admin logged in');
+        this.router.navigate(['/admin-dashboard']);
+        return;
       }
 
-      // Force token refresh to get updated claims
-      await userCredential.user.getIdToken(true);
+      // For regular users, navigate to dashboard
+      this.router.navigate(['/dashboard']);
 
-      // redirect based on admin claim
-      try {
-        const u: any = this.auth.currentUser;
-        if (u) {
-          const tokenResult = await u.getIdTokenResult(true); // Force refresh
-          const isAdmin = !!tokenResult.claims?.admin;
-          console.log('User admin status:', isAdmin);
-          this.router.navigate([isAdmin ? '/admin-dashboard' : '/dashboard']);
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-      } catch (e) {
-        console.error('Token check error:', e);
-        // fallback to dashboard
-        this.router.navigate(['/dashboard']);
-      }
     } catch (error: any) {
       console.error('Login failed:', error.code, error.message);
 

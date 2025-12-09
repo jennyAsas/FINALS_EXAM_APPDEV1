@@ -23,8 +23,12 @@
   <!-- Loading State -->
   @if (isLoading()) {
     <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading profile...</p>
+      <div class="loading-spinner-container">
+        <div class="spinner"></div>
+      </div>
+      <div class="loading-text-container">
+        <p>Loading profile...</p>
+      </div>
     </div>
   }
 

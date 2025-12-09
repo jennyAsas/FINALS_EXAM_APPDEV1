@@ -206,62 +206,66 @@
 .password-field {
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .password-input-wrapper {
-  width: 100%;
+  flex: 1;
   position: relative;
+  width: 100%;
 }
 
 .password-input {
   width: 100%;
   display: block;
-  padding-right: 60px; /* room for toggle */
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background: #f8f9fa;
+  color: #1a1a1a;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 50px;
+  font-family: inherit;
+}
+
+.password-input:hover {
+  border-color: #d0d0d0;
+  background: #fff;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: #1a2a5e;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(26, 42, 94, 0.1);
 }
 
 .password-toggle-btn {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: auto;
-  padding: 6px 10px;
-  margin: 0;
-  border-radius: 8px;
-  white-space: nowrap;
-}
-
-.password-input-wrapper.show-password {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggZD0iTTEgMTJzNC04IDExLTggMTEgOCAxMSA4LTQgOC0xMSA4LTExLTgtMTEtOHoiPjwvcGF0aD48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzIj48L2NpcmNsZT48L3N2Zz4=');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-}
-
-.password-input-wrapper.hide-password {
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggZD0iTTE3Ljk0IDE3Ljk0QTEwLjA3IDEwLjA3IDAgMCAxIDEyIDIwYy03IDAtMTEtOC0xMS04YTE4LjQ1IDE4LjQ1IDAgMCAxIDUuMDYtNS45NE05LjkgNC4yNEE5LjEyIDkuMTIgMCAwIDEgMTIgNGM3IDAgMTEgOCAxMSA4YTE4LjUgMTguNSAwIDAgMS0yLjE2IDMuMTltLTYuNzItMS4wN2EzIDMgMCAxIDEtNC4yNC00LjI0Ij48L3BhdGg+PGxpbmUgeDE9IjEiIHkxPSIxIiB4Mj0iMjMiIHkyPSIyMyI+PC9saW5lPjwvc3ZnPg==');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-}
-
-.password-input {
-  padding-right: 42px;
-}
-
-.password-toggle-btn {
+  flex-shrink: 0;
   background: transparent;
-  border: none;
+  border: 1px solid #d0d0d0;
   cursor: pointer;
   color: #1a2a5e;
-  padding: 8px 12px;
+  padding: 6px 12px;
   transition: all 0.2s ease;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border-radius: 6px;
+  white-space: nowrap;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .password-toggle-btn:hover {
   color: #d4a84b;
   background: rgba(26, 42, 94, 0.1);
+  border-color: #1a2a5e;
 }
 
 .password-toggle-btn:focus {

@@ -810,6 +810,122 @@ input[type="submit"],
    top: 0;
 }
 
+/* ===== MOBILE-FIRST OPTIMIZATIONS ===== */
+
+/* Prevent zoom on input focus (iOS) */
+input, textarea, select {
+   font-size: 16px;
+}
+
+/* Touch-friendly minimum tap targets (48x48px recommended) */
+button, a, [role="button"], [role="link"] {
+   min-height: 44px;
+   min-width: 44px;
+   touch-action: manipulation;
+}
+
+/* Prevent scrolling lag on iOS */
+html {
+   -webkit-font-smoothing: antialiased;
+   -webkit-text-size-adjust: 100%;
+   -ms-text-size-adjust: 100%;
+}
+
+/* Remove default styles on mobile form elements */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+input[type=number] {
+   -moz-appearance: textfield;
+}
+
+/* Smooth scrolling */
+html {
+   scroll-behavior: smooth;
+}
+
+/* Better tap color feedback */
+body {
+   -webkit-tap-highlight-color: rgba(26, 42, 94, 0.1);
+}
+
+/* Responsive font sizing */
+@media (max-width: 480px) {
+   body {
+      font-size: 14px;
+      line-height: 1.5;
+   }
+
+   h1 { font-size: 1.5rem; }
+   h2 { font-size: 1.3rem; }
+   h3 { font-size: 1.1rem; }
+   h4 { font-size: 1rem; }
+   h5 { font-size: 0.95rem; }
+   h6 { font-size: 0.9rem; }
+
+   p { margin: 0.5rem 0; }
+}
+
+@media (max-width: 768px) {
+   body {
+      font-size: 15px;
+   }
+
+   h1 { font-size: 1.75rem; }
+   h2 { font-size: 1.5rem; }
+   h3 { font-size: 1.25rem; }
+   h4 { font-size: 1.1rem; }
+}
+
+/* Better link colors for accessibility */
+a {
+   color: var(--sentinel-blue);
+   text-decoration: none;
+   transition: color 0.2s ease;
+}
+
+a:hover {
+   color: var(--navy-light);
+   text-decoration: underline;
+}
+
+a:active {
+   color: var(--navy-dark);
+}
+
+/* Mobile-friendly input/select styling */
+input, textarea, select {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   border-radius: 4px;
+   border: 2px solid #e0e0e0;
+   padding: 10px 12px;
+   transition: all 0.3s ease;
+}
+
+select {
+   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+   background-repeat: no-repeat;
+   background-position: right 10px center;
+   background-size: 20px;
+   padding-right: 36px;
+}
+
+/* Container queries for responsive layouts */
+@supports (container-type: inline-size) {
+   .responsive-container {
+      container-type: inline-size;
+   }
+
+   @container (max-width: 400px) {
+      .container-sm { flex-direction: column; }
+   }
+}
+
 /* Color Contrast Verification Utilities (WCAG 1.4.3 - 4.5:1 minimum) */
 .text-high-contrast {
    color: var(--color-text-primary); /* #1a1a1a on white = 15.3:1 */
@@ -857,3 +973,4 @@ input[type="submit"],
       display: none !important;
    }
 }
+

@@ -266,26 +266,25 @@ export class AdminReport implements OnInit {
       if (data && data.address) {
         const address = data.address;
         const street = address.road || address.street || address.neighbourhood || '';
-        const suburb = address.suburb || address.neighbourhood || address.quarter || '';
 
         if (street && !this.street) {
           this.street = street;
         }
 
-        if (suburb) {
-          const matchedBarangay = this.baguioBarangays.find(
-            (b) =>
-              b.toLowerCase().includes(suburb.toLowerCase()) ||
-              suburb.toLowerCase().includes(b.toLowerCase().split('(')[0].trim().toLowerCase()),
-          );
-
-          if (matchedBarangay && !this.barangay) {
-            this.barangay = matchedBarangay;
-          }
+        // For barangay: ALWAYS use coordinate-based matching for pinpointed locations
+        // This is more accurate than Nominatim string matching which can be incorrect
+        const nearestBarangay = this.findNearestBarangay(lat, lng);
+        if (nearestBarangay && !this.barangay) {
+          this.barangay = nearestBarangay;
         }
       }
     } catch (error) {
       console.warn('Could not fetch address details:', error);
+      // Still try to fill barangay by coordinates even if Nominatim fails
+      const nearestBarangay = this.findNearestBarangay(lat, lng);
+      if (nearestBarangay && !this.barangay) {
+        this.barangay = nearestBarangay;
+      }
     }
   }
 
@@ -538,10 +537,145 @@ export class AdminReport implements OnInit {
             this.barangay = matchedBarangay;
           }
         }
+
+        // If no barangay matched from address, use nearest barangay by coordinates
+        if (!this.barangay) {
+          const nearestBarangay = this.findNearestBarangay(lat, lng);
+          if (nearestBarangay && !this.barangay) {
+            this.barangay = nearestBarangay;
+          }
+        }
       }
     } catch (error) {
       console.warn('Could not reverse geocode for auto-fill:', error);
     }
+  }
+
+  // Find nearest barangay by coordinates - improved accuracy
+  private findNearestBarangay(lat: number, lng: number): string | null {
+    const BAGUIO_BARANGAY_COORDS: { [key: string]: [number, number] } = {
+      'Asin (Pinsao East)': [16.4089, 120.5483],
+      'Aurora Hill': [16.4119, 120.5556],
+      'Bahpo': [16.388, 120.5397],
+      'Beckel': [16.4139, 120.5447],
+      'Bislig': [16.3928, 120.5517],
+      'Bugnay': [16.4156, 120.5333],
+      'Burnham': [16.4178, 120.5392],
+      'Camp 1 (Kayang)': [16.4142, 120.5522],
+      'Camp 2': [16.4067, 120.5556],
+      'Camp 3 (Irisan)': [16.4247, 120.5333],
+      'Cabangahan': [16.4153, 120.5228],
+      'Calabatok': [16.4003, 120.5342],
+      'Cambinan': [16.4214, 120.5267],
+      'Capangan': [16.4261, 120.5361],
+      'Chaguisian': [16.3978, 120.5583],
+      'Cresencia': [16.4206, 120.5481],
+      'Cutcut': [16.4089, 120.5178],
+      'Dalindingan': [16.4114, 120.5289],
+      'Dalupirip': [16.3853, 120.5383],
+      'Demang': [16.4025, 120.5303],
+      'Dikilili': [16.4136, 120.5114],
+      'East Quirino Hill': [16.418, 120.5619],
+      'Ekip': [16.4008, 120.5228],
+      'Elias': [16.4167, 120.5403],
+      'Guisad': [16.3939, 120.5442],
+      'Hillside': [16.4189, 120.5586],
+      'Honeymoon': [16.4047, 120.5464],
+      'Imelda (formerly Pacdal)': [16.4314, 120.5392],
+      'Irisan': [16.4247, 120.5333],
+      'Kayang (Camp 1)': [16.4142, 120.5522],
+      'Kias': [16.4036, 120.5136],
+      'Kisad': [16.3997, 120.5361],
+      'La Trinidad': [16.4217, 120.5153],
+      'Longlong': [16.3953, 120.5253],
+      'Loakan': [16.3778, 120.5531],
+      'Lubas': [16.4094, 120.5392],
+      'Lucban': [16.42, 120.5247],
+      'Luntiang': [16.4214, 120.5506],
+      'Madaymen': [16.4033, 120.5589],
+      'Magsaysay': [16.3989, 120.5481],
+      'Malugong': [16.3814, 120.5286],
+      'Malolos': [16.4122, 120.5217],
+      'Mandala': [16.4333, 120.5425],
+      'Mangahas': [16.4281, 120.5225],
+      'Marcoville': [16.4189, 120.5361],
+      'Midtown': [16.4131, 120.5358],
+      'Military Cutoff': [16.3889, 120.5364],
+      'Mines View': [16.4081, 120.5522],
+      'MinfrCut': [16.3842, 120.5356],
+      'Modern Timber': [16.3964, 120.5086],
+      'Mombong': [16.4178, 120.5136],
+      'Moore': [16.4042, 120.5392],
+      'New Lucban': [16.4042, 120.5517],
+      'North Kabayan': [16.3867, 120.5175],
+      'Outlook': [16.4164, 120.5575],
+      'Pacdal': [16.4314, 120.5392],
+      'Penalosa': [16.4286, 120.5286],
+      'Pinsao East (Asin)': [16.4089, 120.5483],
+      'Pinsao West': [16.4103, 120.5364],
+      'Pilapil': [16.4158, 120.5261],
+      'Puguis': [16.3797, 120.5425],
+      'Quezon Hill': [16.4308, 120.5514],
+      'Rock Quarry': [16.4267, 120.5447],
+      'Rosario': [16.4175, 120.5225],
+      'Sadjap': [16.4025, 120.5286],
+      'Sago': [16.3903, 120.5236],
+      'Salugan': [16.3942, 120.5392],
+      'Salubetsu': [16.4183, 120.5303],
+      'San Isidro': [16.4128, 120.5464],
+      'San Luis': [16.4089, 120.5578],
+      'San Roque': [16.3967, 120.5625],
+      'Santa Cruz': [16.4172, 120.5325],
+      'Santo Tomas': [16.4128, 120.5556],
+      'Sapsap': [16.3889, 120.5233],
+      'Shag': [16.3953, 120.5325],
+      'Slaughter House': [16.3931, 120.5158],
+      'Stonehill': [16.4006, 120.5614],
+      'Suppang': [16.4019, 120.5303],
+      'Taiwan': [16.3828, 120.5303],
+      'Tandoc': [16.4122, 120.5122],
+      'Taong Empleyado (TE)': [16.4289, 120.5556],
+      'Teestahan': [16.4122, 120.5392],
+      'The Pines': [16.3758, 120.5428],
+      'Tikiwan': [16.3867, 120.5464],
+      'Upper Tutubi': [16.3956, 120.5622],
+      'Virac': [16.3906, 120.5158],
+      'Vista Verde': [16.4267, 120.5353],
+      'Wangal': [16.3936, 120.5578],
+      'West Modern Timber': [16.4003, 120.5086],
+      'West Quirino Hill': [16.4206, 120.5619],
+      'Zamora Hill': [16.4219, 120.5625],
+    };
+
+    let nearestBarangay: string | null = null;
+    let minDistance = Infinity;
+
+    for (const [barangay, [bLat, bLng]] of Object.entries(BAGUIO_BARANGAY_COORDS)) {
+      // Use haversine formula for more accurate distance calculation
+      const distance = this.haversineDistance(lat, lng, bLat, bLng);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestBarangay = barangay;
+      }
+    }
+
+    return nearestBarangay;
+  }
+
+  // Haversine formula for accurate geographic distance
+  private haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLng = ((lng2 - lng1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in kilometers
   }
 
   saveFormProgress(): void {

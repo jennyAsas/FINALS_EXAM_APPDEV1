@@ -153,11 +153,15 @@ export class InteractiveLocationPickerComponent implements OnInit, OnDestroy {
   }
 
   private updateMarkerPosition(lat: number, lng: number): void {
+    // Keep the exact coordinates user selected - do not modify them
     this.currentLocation.lat = lat;
     this.currentLocation.lng = lng;
     this.marker.setLatLng([lat, lng]);
     this.marker.setPopupContent('Location selected');
-    this.reverseGeocode(lat, lng);
+    
+    // Get address description without modifying coordinates
+    this.getAddressDescription(lat, lng);
+    
     // Emit location immediately for real-time sync
     this.locationSelected.emit({ ...this.currentLocation });
   }
@@ -288,6 +292,8 @@ export class InteractiveLocationPickerComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Set exact location from search result - DO NOT trigger reverse geocode
+    // This ensures the user's selected location stays exactly where they picked it
     this.currentLocation = {
       lat: suggestion.lat,
       lng: suggestion.lng,
@@ -305,7 +311,28 @@ export class InteractiveLocationPickerComponent implements OnInit, OnDestroy {
     });
 
     // Emit location immediately for real-time sync to form
-    this.locationSelected.emit({ ...this.currentLocation });
+    // Use a small delay to ensure marker has finished animating
+    setTimeout(() => {
+      this.locationSelected.emit({ ...this.currentLocation });
+    }, 300);
+  }
+
+  private getAddressDescription(lat: number, lng: number): void {
+    // Get address description without emitting location changes
+    // This prevents coordinate drift from reverse geocode rounding
+    const url = `${this.nominatimUrl}/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((result) => {
+        // Only update address, NEVER modify coordinates
+        if (result && result.display_name) {
+          this.currentLocation.address = result.display_name;
+        }
+      })
+      .catch(() => {
+        // Silently fail - coordinates are still valid
+      });
   }
 
   private reverseGeocode(lat: number, lng: number): void {

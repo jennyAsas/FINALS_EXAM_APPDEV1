@@ -35,6 +35,9 @@ export class AlertForm {
       // Clear form after success
       this.alertData.message = '';
       this.alertData.priority = 'medium';
+
+      // Auto-scroll to the top of the page
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
       console.error('Error issuing alert:', e);
       this.toastService.error('Failed to issue alert. Please try again.');

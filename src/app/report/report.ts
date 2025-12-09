@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
@@ -23,6 +23,8 @@ export class Report implements OnInit, AfterViewInit, OnDestroy {
   private router = inject(Router);
   private animationService = inject(AnimationService);
   private toastService = inject(ToastService);
+
+  @ViewChild('reportFormContainer', { static: false }) reportFormContainer?: ElementRef;
 
   // Report form fields
   description = '';
@@ -257,7 +259,7 @@ export class Report implements OnInit, AfterViewInit, OnDestroy {
       }
     } catch (err) {
       // silently ignore geocode failures
-      console.warn('Failed to geocode barangay on blur: - report.ts', err);
+      console.warn('Failed to geocode barangay on blur: - report.ts:262', err);
     }
   }
 
@@ -269,7 +271,7 @@ export class Report implements OnInit, AfterViewInit, OnDestroy {
     this.saveFormProgress();
 
     // Show a subtle confirmation
-    console.log('Location updated from map:', this.location);
+    console.log('Location updated from map: - report.ts:274', this.location);
   }
 
   toggleInteractiveMap(): void {
@@ -287,9 +289,6 @@ export class Report implements OnInit, AfterViewInit, OnDestroy {
         // Extract street and neighborhood/suburb information
         const address = data.address;
         const street = address.road || address.street || address.neighbourhood || '';
-        const suburb =
-          address.suburb || address.neighbourhood || address.quarter || address.village || '';
-        const district = address.city_district || address.district || '';
 
         // Auto-fill street - always update when selecting from map
         if (street) {
@@ -301,76 +300,57 @@ export class Report implements OnInit, AfterViewInit, OnDestroy {
           this.landmark = address.amenity || address.building || address.shop;
         }
 
-        // Try to match detected suburb/neighbourhood/district with our barangay list
-        const searchTerms = [suburb, district, address.neighbourhood, address.quarter].filter(
-          Boolean,
-        );
-
-        for (const term of searchTerms) {
-          if (!term) continue;
-
-          const termLower = term.toLowerCase();
-          const matchedBarangay = this.baguioBarangays.find((b) => {
-            const bLower = b.toLowerCase();
-            const bBase = bLower.split('(')[0].trim();
-            return (
-              bLower.includes(termLower) ||
-              termLower.includes(bBase) ||
-              bBase.includes(termLower) ||
-              termLower.split(' ').some((word: string) => word.length > 3 && bBase.includes(word))
-            );
-          });
-
-          if (matchedBarangay) {
-            this.barangay = matchedBarangay;
-            break;
-          }
-        }
-
-        // If no barangay matched, try to find nearest barangay by coordinates
-        if (!this.barangay) {
-          const nearestBarangay = this.findNearestBarangay(lat, lng);
-          if (nearestBarangay) {
-            this.barangay = nearestBarangay;
-          }
+        // For barangay: ALWAYS use coordinate-based matching for pinpointed locations
+        // This is more accurate than Nominatim string matching which can be incorrect
+        const nearestBarangay = this.findNearestBarangay(lat, lng);
+        if (nearestBarangay) {
+          this.barangay = nearestBarangay;
         }
       }
     } catch (error) {
-      console.warn('Could not fetch address details: - report.ts:279', error);
+      console.warn('Could not fetch address details: - report.ts:311', error);
       // Don't show error to user - this is just a helpful suggestion
+      // Still try to fill barangay by coordinates even if Nominatim fails
+      const nearestBarangay = this.findNearestBarangay(lat, lng);
+      if (nearestBarangay) {
+        this.barangay = nearestBarangay;
+      }
     }
   }
 
-  // Find nearest barangay by coordinates
+  // Find nearest barangay by coordinates - improved accuracy
   findNearestBarangay(lat: number, lng: number): string | null {
     const BAGUIO_BARANGAY_COORDS: { [key: string]: [number, number] } = BAGUIO_BARANGAY_CENTROIDS;
 
     let nearestBarangay: string | null = null;
     let minDistance = Infinity;
 
-    for (const [name, coords] of Object.entries(BAGUIO_BARANGAY_COORDS)) {
-      const [bLat, bLng] = coords;
-      // Calculate simple Euclidean distance (good enough for small areas)
-      const distance = Math.sqrt(Math.pow(lat - bLat, 2) + Math.pow(lng - bLng, 2));
+    for (const [barangay, [bLat, bLng]] of Object.entries(BAGUIO_BARANGAY_COORDS)) {
+      // Use haversine formula for more accurate distance calculation
+      const distance = this.haversineDistance(lat, lng, bLat, bLng);
 
       if (distance < minDistance) {
         minDistance = distance;
-        nearestBarangay = name;
+        nearestBarangay = barangay;
       }
     }
 
-    // Only return if within reasonable distance (roughly 1km)
-    if (minDistance < 0.02) {
-      // Find the matching name in our full barangay list
-      const matchedFull = this.baguioBarangays.find(
-        (b) =>
-          b.toLowerCase().includes(nearestBarangay!.toLowerCase()) ||
-          nearestBarangay!.toLowerCase().includes(b.toLowerCase().split('(')[0].trim()),
-      );
-      return matchedFull || nearestBarangay;
-    }
+    return nearestBarangay;
+  }
 
-    return null;
+  // Haversine formula for accurate geographic distance
+  private haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLng = ((lng2 - lng1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in kilometers
   }
 
   // Geocode barangay name to coordinates
@@ -523,17 +503,40 @@ export class Report implements OnInit, AfterViewInit, OnDestroy {
       this.successMessage = 'Report submitted successfully and is awaiting admin approval.';
       this.toastService.success('Safety report submitted successfully! Awaiting admin approval.');
 
-      // Scroll to top to show success message without clearing form
+      // Scroll to the form container at the top
+      const scrollToFormTop = () => {
+        if (this.reportFormContainer) {
+          this.reportFormContainer.nativeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+        
+        // Also scroll window to ensure it's visible
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+          left: 0
+        });
+      };
+      
+      // Scroll immediately
+      scrollToFormTop();
+      
+      // Clear form after showing success message and ensure scroll persists
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Clear form after scroll completes
+        this.clearForm();
+        sessionStorage.removeItem('reportFormData');
+        
+        // Scroll back to top after clearing form
         setTimeout(() => {
-          this.clearForm();
-          sessionStorage.removeItem('reportFormData');
-        }, 800);
-      }, 100);
+          scrollToFormTop();
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }, 50);
+      }, 2000);
     } catch (error: any) {
-      console.error('Report submission failed: - report.ts:616', error);
+      console.error('Report submission failed: - report.ts:539', error);
       this.errorMessage = 'Submission failed. Please try again.';
       this.toastService.error('Submission failed. Please try again.');
     } finally {

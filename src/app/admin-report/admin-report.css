@@ -117,6 +117,7 @@
   transition: all 0.3s;
   font-family: inherit;
   min-height: 44px;
+  color: #1a1a1a; /* Set text color to dark gray for visibility */
 }
 
 .form-group input:focus,
