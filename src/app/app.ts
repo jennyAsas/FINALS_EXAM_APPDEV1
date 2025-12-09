@@ -231,16 +231,89 @@ import { take } from 'rxjs/operators';
       </div>
       <div class="nav-menu-overlay" [class.open]="navMenuOpen" (click)="closeNavMenu()"></div>
 
-      <!-- Right Side: Role Badge + Profile -->
+      <!-- Right Side: Role Badge + Navigation Buttons + Profile -->
       <div class="header-right">
         <!-- Profile Avatar with Dropdown -->
         <ng-container *ngIf="authService.currentUser$ | async as user; else loginBtn">
-          <!-- Role Badge before Profile -->
+          <!-- Role Badge before Navigation Buttons -->
           <div class="user-role-indicator" [class.admin-indicator]="authService.isAdmin$ | async">
             <span class="role-text">{{
               (authService.isAdmin$ | async) ? 'ADMIN' : 'CITIZEN'
             }}</span>
           </div>
+
+          <!-- Navigation Action Buttons (Citizen Only) -->
+          <ng-container *ngIf="!(authService.isAdmin$ | async)">
+            <div class="header-nav-buttons">
+              <!-- Police Reports Button -->
+              <button
+                class="header-nav-btn"
+                (click)="navigateToPoliceReports()"
+                title="Police Reports"
+                aria-label="View Police Reports"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+                </svg>
+                <span class="header-nav-label">Police Reports</span>
+              </button>
+
+              <!-- Incident Map Button -->
+              <button
+                class="header-nav-btn"
+                (click)="navigateToMap()"
+                title="Incident Map"
+                aria-label="View Incident Map"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span class="header-nav-label">Map</span>
+              </button>
+
+              <!-- Emergency SOS Button -->
+              <button
+                class="header-nav-btn sos-btn-header"
+                (click)="triggerEmergencySOS()"
+                title="Emergency SOS"
+                aria-label="Trigger Emergency SOS"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon
+                    points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
+                  ></polygon>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="header-nav-label">SOS</span>
+              </button>
+            </div>
+          </ng-container>
 
           <div class="profile-dropdown" (click)="toggleProfileMenu()">
             <div class="profile-avatar">
@@ -449,5 +522,21 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  navigateToPoliceReports(): void {
+    this.router.navigate(['/safety-feed']);
+    this.closeProfileMenu();
+  }
+
+  navigateToMap(): void {
+    this.router.navigate(['/map']);
+    this.closeProfileMenu();
+  }
+
+  triggerEmergencySOS(): void {
+    this.router.navigate(['/dashboard']);
+    this.closeProfileMenu();
+    // The SOS functionality is handled within the dashboard component
   }
 }

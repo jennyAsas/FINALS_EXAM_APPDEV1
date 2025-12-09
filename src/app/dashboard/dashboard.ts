@@ -13,7 +13,7 @@ import { ToastService } from '../toast/toast.service';
   standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
+  styleUrls: ['./dashboard.css', './dashboard-mobile.css'],
   imports: [CommonModule, RouterModule],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {

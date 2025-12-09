@@ -1,0 +1,81 @@
+/* ===== MOBILE RESPONSIVE OPTIMIZATIONS FOR DASHBOARD ===== */
+
+/* Tablet and smaller - Compact FAB buttons */
+@media (max-width: 768px) {
+  .fab-stack {
+    left: 8px !important;
+    bottom: 14px !important;
+    gap: 8px !important;
+  }
+  
+  .fab-btn {
+    height: 36px !important;
+    border-radius: 18px !important;
+    padding: 0 12px 0 9px !important;
+    gap: 7px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  .fab-btn svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  .fab-label {
+    font-size: 10px !important;
+    letter-spacing: 0.15px !important;
+  }
+}
+
+/* Mobile phones - Smaller FAB buttons */
+@media (max-width: 480px) {
+  .fab-stack {
+    left: 6px !important;
+    bottom: 10px !important;
+    gap: 6px !important;
+  }
+  
+  .fab-btn {
+    height: 32px !important;
+    border-radius: 16px !important;
+    padding: 0 10px 0 8px !important;
+    gap: 5px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  .fab-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  .fab-label {
+    font-size: 9px !important;
+    letter-spacing: 0.05px !important;
+  }
+}
+
+/* Extra small phones - Very compact */
+@media (max-width: 375px) {
+  .fab-stack {
+    left: 4px !important;
+    bottom: 8px !important;
+    gap: 5px !important;
+  }
+  
+  .fab-btn {
+    height: 30px !important;
+    border-radius: 15px !important;
+    padding: 0 8px 0 6px !important;
+    gap: 4px !important;
+  }
+  
+  .fab-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  .fab-label {
+    font-size: 8px !important;
+    letter-spacing: 0px !important;
+  }
+}

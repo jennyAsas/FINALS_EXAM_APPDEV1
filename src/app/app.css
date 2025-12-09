@@ -3,7 +3,7 @@
 .app-header {
     background: linear-gradient(135deg, #1a2a5e 0%, #0d1a3d 100%);
     color: white;
-    padding: 12px 30px;
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -162,6 +162,100 @@
     box-shadow: 0 2px 8px rgba(255, 215, 0, 0.45);
     border: 1px solid rgba(255, 215, 0, 0.5);
     animation: adminGlow 3s ease-in-out infinite;
+}
+
+/* Header Navigation Buttons (Citizen View) */
+.header-nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    min-height: 44px; /* WCAG touch target */
+    min-width: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.header-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(212, 168, 75, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.header-nav-btn:active {
+    transform: translateY(0);
+}
+
+.header-nav-btn svg {
+    flex-shrink: 0;
+}
+
+.header-nav-label {
+    display: none; /* Hidden by default on mobile */
+}
+
+/* SOS Button specific styling in header */
+.header-nav-btn.sos-btn-header {
+    background: linear-gradient(135deg, #ff6b6b 0%, #dc3545 100%);
+    border-color: rgba(255, 255, 255, 0.3);
+    animation: sosHeaderPulse 2s infinite;
+}
+
+.header-nav-btn.sos-btn-header:hover {
+    background: linear-gradient(135deg, #ff8080 0%, #e64555 100%);
+    box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4);
+}
+
+@keyframes sosHeaderPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(220, 53, 69, 0);
+    }
+}
+
+/* Show labels on larger screens */
+@media (min-width: 768px) {
+    .header-nav-label {
+        display: inline;
+    }
+    
+    .header-nav-btn {
+        padding: 8px 14px;
+    }
+}
+
+/* Hide navigation buttons on very small screens */
+@media (max-width: 600px) {
+    .header-nav-buttons {
+        gap: 4px;
+    }
+    
+    .header-nav-btn {
+        padding: 8px;
+        min-width: 44px;
+        justify-content: center;
+    }
+    
+    .header-nav-btn svg {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 /* Profile Dropdown */
@@ -1641,5 +1735,20 @@
     /* Add active states instead */
     .btn:active, button:active {
         opacity: 0.85;
+    }
+}
+
+/* Mobile Navbar - Fit to screen */
+@media (max-width: 768px) {
+    .app-header {
+        padding: 8px 12px;
+        height: 56px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        padding: 6px 10px;
+        height: 50px;
     }
 }
